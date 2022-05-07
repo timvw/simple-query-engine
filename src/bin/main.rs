@@ -1,8 +1,8 @@
 use simply_query_engine::error::*;
 use simply_query_engine::datasource::*;
 use simply_query_engine::logical::*;
-//use simply_query_engine::physical::*;
-
+use simply_query_engine::optimiser::QueryOptimiser;
+use simply_query_engine::planner::QueryPlanner;
 
 fn main() -> Result<()> {
 
@@ -11,12 +11,13 @@ fn main() -> Result<()> {
     let scan = Scan::new(Box::new(datasource), vec![]);
     print!("{:?}", scan.schema());
 
+    let optimized_plan = QueryOptimiser::optimize(&scan);
+
+    let phyiscal_plan = QueryPlanner::create_physical_plan(optimized_plan);
+    let result = phyiscal_plan.execute();
+
+    for item in result {
+        println!("here is a batch: {:?}", item);
+    }
     Ok(())
 }
-
-
-
-/*
-trait QueryPlanner {
-    fn create_physical_plan(logical_plan: dyn LogicalPlan) -> dyn PhyiscalPlan;
-}*/
