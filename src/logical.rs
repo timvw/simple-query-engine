@@ -1,14 +1,28 @@
 use arrow2::datatypes::{DataType, Field, Schema};
 use crate::datasource::DataSource;
+use crate::schema_projected;
 
-pub trait LogicalPlan {
-    fn schema(&self) -> Schema;
-    fn children(&self) -> Vec<Box<dyn LogicalPlan>>;
+pub enum LogicalPlan {
+    Scan(Scan),
+}
+
+impl LogicalPlan {
+    pub fn schema(&self) -> Schema {
+        match self {
+            LogicalPlan::Scan(scan) => schema_projected(scan.datasource.schema(), scan.projection.clone()),
+        }
+    }
+
+    pub fn children(&self) -> Vec<Box<LogicalPlan>> {
+        match self {
+            LogicalPlan::Scan(_scan) => vec![],
+        }
+    }
 }
 
 pub struct Scan {
-    datasource: Box<dyn DataSource>,
-    projection: Vec<String>,
+    pub datasource: Box<dyn DataSource>,
+    pub projection: Vec<String>,
 }
 
 impl Scan {
@@ -20,23 +34,8 @@ impl Scan {
     }
 }
 
-impl LogicalPlan for Scan {
-    fn schema(&self) -> Schema {
-        if self.projection.is_empty() {
-            self.datasource.schema()
-        } else {
-            let retained: Vec<Field> = self.datasource.schema().fields.into_iter().filter(|f|self.projection.contains(&f.name)).collect();
-            Schema::from(retained)
-        }
-    }
-
-    fn children(&self) -> Vec<Box<dyn LogicalPlan>> {
-        vec![]
-    }
-}
-
 trait LogicalExpression {
-    fn to_field(&self, input: Box<dyn LogicalPlan>) -> Field;
+    fn to_field(&self, input: LogicalPlan) -> Field;
 }
 
 struct Column {
@@ -44,7 +43,7 @@ struct Column {
 }
 
 impl LogicalExpression for Column {
-    fn to_field(&self, input: Box<dyn LogicalPlan>) -> Field {
+    fn to_field(&self, input: LogicalPlan) -> Field {
         input.schema().fields.iter().find(|f| f.name == self.name).unwrap().clone()
     }
 }
@@ -54,7 +53,7 @@ struct Literal {
 }
 
 impl LogicalExpression for Literal {
-    fn to_field(&self, _input: Box<dyn LogicalPlan>) -> Field {
+    fn to_field(&self, _input: LogicalPlan) -> Field {
         Field::new(&self.value, DataType::Utf8, false)
     }
 }

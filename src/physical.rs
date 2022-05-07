@@ -1,12 +1,29 @@
 use std::sync::Arc;
 use arrow2::array::Array;
-use arrow2::datatypes::{Field, Schema};
+use arrow2::datatypes::Schema;
 use crate::datasource::DataSource;
-use crate::{RecordBatch, RecordBatchStream};
+use crate::{RecordBatch, RecordBatchStream, schema_projected};
 
-pub trait PhyiscalPlan {
-    fn schema(&self) -> Schema;
-    fn execute(&self) -> RecordBatchStream;
+pub enum  PhyiscalPlan {
+    ScanExec(ScanExec),
+}
+
+impl PhyiscalPlan {
+    pub fn schema(&self) -> Schema {
+        match self {
+            PhyiscalPlan::ScanExec(scan) => schema_projected(scan.datasource.schema(), scan.projection.clone()),
+        }
+    }
+    pub fn execute(&self) -> RecordBatchStream {
+        match self {
+            PhyiscalPlan::ScanExec(scan) => scan.datasource.scan(scan.projection.clone()),
+        }
+    }
+}
+
+pub struct ScanExec {
+    pub datasource: Box<dyn DataSource>,
+    pub projection: Vec<String>,
 }
 
 pub trait PhysicalExpression {
@@ -21,22 +38,6 @@ impl PhysicalExpression for ColumnExpression {
     fn evalute(&self, _input: RecordBatch) -> &Arc<dyn Array> {
         //input.columns()[self.idx]
         todo!();
-    }
-}
-
-pub struct ScanExec {
-    datasource: Box<dyn DataSource>,
-    projection: Vec<String>,
-}
-
-impl PhyiscalPlan for ScanExec {
-    fn schema(&self) -> Schema {
-        let retained: Vec<Field> = self.datasource.schema().fields.into_iter().filter(|f|self.projection.contains(&f.name)).collect();
-        Schema::from(retained)
-    }
-
-    fn execute(&self) -> RecordBatchStream {
-        self.datasource.scan(self.projection.clone())
     }
 }
 

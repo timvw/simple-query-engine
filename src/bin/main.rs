@@ -10,10 +10,10 @@ async fn main() -> Result<()> {
 
     let test_file = "/Users/timvw/src/github/simply-query-engine/test-data/alltypes_plain.parquet";
     let datasource = ParquetDataSource::new(test_file.to_string())?;
-    let scan = Scan::new(Box::new(datasource), vec![]);
-    print!("{:?}", scan.schema());
+    let logical_plan = LogicalPlan::Scan(Scan::new(Box::new(datasource), vec![]));
+    print!("{:?}", logical_plan.schema());
 
-    let optimized_plan = QueryOptimiser::optimize(&scan);
+    let optimized_plan = QueryOptimiser::optimize(logical_plan);
 
     let phyiscal_plan = QueryPlanner::create_physical_plan(optimized_plan);
 

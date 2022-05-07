@@ -4,7 +4,7 @@ pub struct QueryOptimiser {
 }
 
 impl QueryOptimiser {
-    pub fn optimize(logical_plan: &dyn LogicalPlan) -> &dyn LogicalPlan {
+    pub fn optimize(logical_plan: LogicalPlan) -> LogicalPlan {
         logical_plan
     }
 }
