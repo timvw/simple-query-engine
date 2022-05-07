@@ -1,9 +1,9 @@
 use arrow2::datatypes::Schema;
-use crate::RecordBatch;
-
-pub mod parquet;
+use crate::RecordBatchStream;
 
 pub trait DataSource {
     fn schema(&self) -> Schema;
-    fn scan(&self, projection: Vec<String>) -> Vec<RecordBatch>;
+    fn scan(&self, projection: Vec<String>) -> RecordBatchStream;
 }
+
+pub mod parquet;

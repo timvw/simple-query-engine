@@ -2,11 +2,11 @@ use std::sync::Arc;
 use arrow2::array::Array;
 use arrow2::datatypes::{Field, Schema};
 use crate::datasource::DataSource;
-use crate::RecordBatch;
+use crate::{RecordBatch, RecordBatchStream};
 
 pub trait PhyiscalPlan {
     fn schema(&self) -> Schema;
-    fn execute(&self) -> Vec<RecordBatch>;
+    fn execute(&self) -> RecordBatchStream;
 }
 
 pub trait PhysicalExpression {
@@ -35,7 +35,7 @@ impl PhyiscalPlan for ScanExec {
         Schema::from(retained)
     }
 
-    fn execute(&self) -> Vec<RecordBatch> {
+    fn execute(&self) -> RecordBatchStream {
         self.datasource.scan(self.projection.clone())
     }
 }
