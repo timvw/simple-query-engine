@@ -1,7 +1,11 @@
+use std::fs::File;
 use std::sync::Arc;
 use arrow2::array::Array;
 use arrow2::chunk::Chunk;
 use arrow2::datatypes::{Schema};
+use arrow2::io::parquet::read;
+use arrow2::io::parquet::read::FileReader;
+use crate::error::Result;
 
 pub trait DataSource {
     fn schema(&self) -> Schema;
@@ -9,12 +13,22 @@ pub trait DataSource {
 }
 
 pub struct ParquetDataSource {
-    file: String,
+    file_reader: FileReader<File>,
+}
+
+impl ParquetDataSource {
+    fn new(file_path: String) -> Result<ParquetDataSource> {
+        let file = File::open(file_path)?;
+        let file_reader = read::FileReader::try_new(file, None, None, None, None)?;
+        Ok(ParquetDataSource {
+            file_reader
+        })
+    }
 }
 
 impl DataSource for ParquetDataSource {
     fn schema(&self) -> Schema {
-        todo!()
+        self.file_reader.schema().clone()
     }
 
     fn scan(&self, projection: Vec<String>) -> Vec<Chunk<Arc<dyn Array>>> {
