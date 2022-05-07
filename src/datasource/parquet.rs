@@ -5,12 +5,7 @@ use arrow2::chunk::Chunk;
 use arrow2::datatypes::Schema;
 use arrow2::io::parquet::read::FileReader;
 use crate::error::Result;
-use crate::RecordBatch;
-
-pub trait DataSource {
-    fn schema(&self) -> Schema;
-    fn scan(&self, projection: Vec<String>) -> Vec<RecordBatch>;
-}
+use crate::datasource::DataSource;
 
 pub struct ParquetDataSource {
     file_reader: FileReader<File>,

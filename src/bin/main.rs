@@ -1,5 +1,5 @@
 use simply_query_engine::error::*;
-use simply_query_engine::datasource::*;
+use simply_query_engine::datasource::parquet::*;
 use simply_query_engine::logical::*;
 use simply_query_engine::optimiser::QueryOptimiser;
 use simply_query_engine::planner::QueryPlanner;
