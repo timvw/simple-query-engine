@@ -2,8 +2,7 @@ use std::fs::File;
 use std::sync::Arc;
 use arrow2::array::Array;
 use arrow2::chunk::Chunk;
-use arrow2::datatypes::{Schema};
-use arrow2::io::parquet::read;
+use arrow2::datatypes::Schema;
 use arrow2::io::parquet::read::FileReader;
 use crate::error::Result;
 use crate::RecordBatch;
@@ -20,7 +19,7 @@ pub struct ParquetDataSource {
 impl ParquetDataSource {
     pub fn new(file_path: String) -> Result<ParquetDataSource> {
         let file = File::open(file_path)?;
-        let file_reader = read::FileReader::try_new(file, None, None, None, None)?;
+        let file_reader = FileReader::try_new(file, None, None, None, None)?;
         Ok(ParquetDataSource {
             file_reader
         })
