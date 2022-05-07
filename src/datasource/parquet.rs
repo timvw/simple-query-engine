@@ -8,7 +8,6 @@ use crate::RecordBatchStream;
 
 pub struct ParquetDataSource {
     file_path: String,
-    //file_reader: FileReader<File>,
 }
 
 impl ParquetDataSource {
@@ -47,10 +46,9 @@ impl DataSource for ParquetDataSource {
 
 #[cfg(test)]
 mod tests {
-
     use super::*;
+    use super::super::super::pretty_print;
     use futures::StreamExt;
-    use crate::RecordBatch;
 
     #[test]
     fn test_parquet_schema() -> Result<()> {
@@ -74,14 +72,9 @@ mod tests {
         for rb in rbs.next().await {
             println!("batch: {:?}", rb);
         }
+        let x = parquet_datasource.scan(vec![]);
+        pretty_print(x, schema).await;
 
         Ok(())
     }
-
-    /*
-    fn pretty_print(rbs: RecordBatchStream, schema: Schema) {
-        let names = schema.fields.iter().map(|f| &f.name).collect::<Vec<_>>();
-        let c = rbs.collect()
-        println!("{}", arrow2::io::print::write(&rbs, &names));
-    }*/
 }

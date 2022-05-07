@@ -1,9 +1,9 @@
+use simply_query_engine::pretty_print;
 use simply_query_engine::error::*;
 use simply_query_engine::datasource::parquet::*;
 use simply_query_engine::logical::*;
 use simply_query_engine::optimiser::QueryOptimiser;
 use simply_query_engine::planner::QueryPlanner;
-use futures::StreamExt;
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -17,9 +17,9 @@ async fn main() -> Result<()> {
 
     let phyiscal_plan = QueryPlanner::create_physical_plan(optimized_plan);
 
-    let mut result = phyiscal_plan.execute();
-    for item in result.next().await {
-        println!("here is a batch: {:?}", item);
-    }
+    let result = phyiscal_plan.execute();
+    let schema = phyiscal_plan.schema();
+    pretty_print(result, schema).await;
+
     Ok(())
 }
