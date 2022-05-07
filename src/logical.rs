@@ -1,14 +1,23 @@
 use arrow2::datatypes::{DataType, Field, Schema};
 use crate::datasource::DataSource;
 
-trait LogicalPlan {
+pub trait LogicalPlan {
     fn schema(&self) -> Schema;
     fn children(&self) -> Vec<Box<dyn LogicalPlan>>;
 }
 
-struct Scan {
+pub struct Scan {
     datasource: Box<dyn DataSource>,
     projection: Vec<String>,
+}
+
+impl Scan {
+    pub fn new(datasource: Box<dyn DataSource>, projection: Vec<String>) -> Scan {
+        Scan {
+            datasource,
+            projection,
+        }
+    }
 }
 
 impl LogicalPlan for Scan {

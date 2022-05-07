@@ -17,7 +17,7 @@ pub struct ParquetDataSource {
 }
 
 impl ParquetDataSource {
-    fn new(file_path: String) -> Result<ParquetDataSource> {
+    pub fn new(file_path: String) -> Result<ParquetDataSource> {
         let file = File::open(file_path)?;
         let file_reader = read::FileReader::try_new(file, None, None, None, None)?;
         Ok(ParquetDataSource {

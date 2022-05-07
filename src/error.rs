@@ -1,4 +1,4 @@
-
+#[derive(Debug)]
 pub enum Error {
     IO(std::io::Error),
     Arrow(arrow2::error::ArrowError),

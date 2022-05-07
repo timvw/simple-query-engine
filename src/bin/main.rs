@@ -1,10 +1,18 @@
-//use simply_query_engine::datasource::*;
-//use simply_query_engine::logical::*;
+use simply_query_engine::error::*;
+use simply_query_engine::datasource::*;
+use simply_query_engine::logical::*;
 //use simply_query_engine::physical::*;
 
-fn main() {
-    println!("Hello, world!");
+
+fn main() -> Result<()> {
+
+    let datasource = ParquetDataSource::new("".to_string())?;
+    let scan = Scan::new(Box::new(datasource), vec![]);
+
+    Ok(())
 }
+
+
 
 /*
 trait QueryPlanner {
