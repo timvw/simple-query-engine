@@ -1,6 +1,5 @@
 use std::sync::Arc;
 use arrow2::array::Array;
-use arrow2::chunk::Chunk;
 use arrow2::datatypes::{Field, Schema};
 use crate::datasource::DataSource;
 use crate::RecordBatch;
@@ -19,7 +18,7 @@ pub struct ColumnExpression {
 }
 
 impl PhysicalExpression for ColumnExpression {
-    fn evalute(&self, input: RecordBatch) -> &Arc<dyn Array> {
+    fn evalute(&self, _input: RecordBatch) -> &Arc<dyn Array> {
         //input.columns()[self.idx]
         todo!();
     }

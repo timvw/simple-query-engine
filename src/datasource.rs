@@ -32,7 +32,7 @@ impl DataSource for ParquetDataSource {
         self.file_reader.schema().clone()
     }
 
-    fn scan(&self, projection: Vec<String>) -> Vec<Chunk<Arc<dyn Array>>> {
+    fn scan(&self, _projection: Vec<String>) -> Vec<Chunk<Arc<dyn Array>>> {
         todo!()
     }
 }

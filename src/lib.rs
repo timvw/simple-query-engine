@@ -6,5 +6,6 @@ pub mod error;
 pub mod datasource;
 pub mod logical;
 pub mod physical;
+pub mod planning;
 
 pub type RecordBatch = Chunk<Arc<dyn Array>>;
