@@ -6,8 +6,10 @@ use simply_query_engine::logical::*;
 
 fn main() -> Result<()> {
 
-    let datasource = ParquetDataSource::new("".to_string())?;
+    let test_file = "/Users/timvw/src/github/simply-query-engine/test-data/alltypes_plain.parquet";
+    let datasource = ParquetDataSource::new(test_file.to_string())?;
     let scan = Scan::new(Box::new(datasource), vec![]);
+    print!("{:?}", scan.schema());
 
     Ok(())
 }

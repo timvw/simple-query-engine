@@ -6,10 +6,11 @@ use arrow2::datatypes::{Schema};
 use arrow2::io::parquet::read;
 use arrow2::io::parquet::read::FileReader;
 use crate::error::Result;
+use crate::RecordBatch;
 
 pub trait DataSource {
     fn schema(&self) -> Schema;
-    fn scan(&self, projection: Vec<String>) -> Vec<Chunk<Arc<dyn Array>>>;
+    fn scan(&self, projection: Vec<String>) -> Vec<RecordBatch>;
 }
 
 pub struct ParquetDataSource {
