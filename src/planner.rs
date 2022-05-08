@@ -12,7 +12,7 @@ impl QueryPlanner {
             }),
             LogicalPlan::Projection(projection) => {
                 PhyiscalPlan::ProjectionExec(Box::new(ProjectionExec {
-                    schema: projection.input.schema().clone(),
+                    schema: projection.input.schema(),
                     input: Self::create_physical_plan(projection.input),
                     expr: vec![],
                 }))

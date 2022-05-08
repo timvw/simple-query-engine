@@ -22,9 +22,8 @@ impl PhyiscalPlan {
         match self {
             PhyiscalPlan::ScanExec(scan) => scan.datasource.scan(scan.projection.clone()),
             PhyiscalPlan::ProjectionExec(projection) => {
-                let rbs = projection.input.execute();
                 // TODO implement evalution of all expressions..
-                rbs
+                projection.input.execute()
             }
         }
     }

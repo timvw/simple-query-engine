@@ -31,7 +31,7 @@ pub fn schema_projected(schema: Schema, projection: Vec<String>) -> Schema {
 pub async fn pretty_print(mut rbs: RecordBatchStream, schema: Schema) {
     let names = schema.fields.iter().map(|f| &f.name).collect::<Vec<_>>();
     let mut all_record_batches = Vec::new();
-    for rb in rbs.next().await {
+    if let Some(rb) = rbs.next().await {
         if rb.is_ok() {
             all_record_batches.push(rb.unwrap());
         }

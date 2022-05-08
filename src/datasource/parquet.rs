@@ -39,7 +39,6 @@ impl DataSource for ParquetDataSource {
             .iter()
             .map(|p| {
                 self.schema()
-                    .clone()
                     .fields
                     .iter()
                     .enumerate()
@@ -112,7 +111,7 @@ mod tests {
         let mut rbs = parquet_datasource.scan(vec!["id".to_string()]);
         let mut actual_row_count = 0;
 
-        for rrb in rbs.next().await {
+        if let Some(rrb) = rbs.next().await {
             let rb = rrb?;
             assert_eq!(rb.columns().len(), 1); // only a single column is requested
             actual_row_count += rb.columns().get(0).unwrap().len();
