@@ -11,4 +11,5 @@ When this does not work, manually run the following:
 
 ```bash
 git submodule add -f https://github.com/apache/arrow-testing.git testing
+git submodule add -f https://github.com/apache/parquet-testing.git parquet-testing
 ```

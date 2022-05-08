@@ -36,21 +36,23 @@ pub struct ScanExec {
 pub struct ProjectionExec {
     pub input: PhyiscalPlan,
     pub schema: Schema,
-    pub expr: Vec<Box<dyn PhysicalExpression>>,
+    pub expr: Vec<PhysicalExpression>,
 }
 
-pub trait PhysicalExpression {
-    fn evalute(&self, input: RecordBatch) -> &Arc<dyn Array>;
+pub enum PhysicalExpression {
+    ColumnExpression(ColumnExpression),
+}
+
+impl PhysicalExpression {
+    pub fn evaluate(&self, _input: RecordBatch) -> &Arc<dyn Array> {
+        match self {
+            PhysicalExpression::ColumnExpression(ce) => todo!(),
+        }
+    }
+
+
 }
 
 pub struct ColumnExpression {
     pub idx: usize,
 }
-
-impl PhysicalExpression for ColumnExpression {
-    fn evalute(&self, _input: RecordBatch) -> &Arc<dyn Array> {
-        //input.columns()[self.idx]
-        todo!();
-    }
-}
-

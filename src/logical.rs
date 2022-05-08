@@ -39,29 +39,27 @@ impl Scan {
 
 pub struct Projection {
     pub input: LogicalPlan,
-    pub expr: Vec<Box<dyn LogicalExpression>>,
+    pub expr: Vec<LogicalExpression>,
 }
 
-pub trait LogicalExpression {
-    fn to_field(&self, input: &LogicalPlan) -> Field;
+pub enum LogicalExpression {
+    Column(Column),
+    Liteal(Literal),
 }
 
-struct Column {
-    name: String,
-}
-
-impl LogicalExpression for Column {
+impl LogicalExpression {
     fn to_field(&self, input: &LogicalPlan) -> Field {
-        input.schema().fields.iter().find(|f| f.name == self.name).unwrap().clone()
+        match self {
+            LogicalExpression::Column(column) => input.schema().fields.iter().find(|f| f.name == column.name).unwrap().clone(),
+            LogicalExpression::Liteal(literal) => Field::new(literal.value.clone(), DataType::Utf8, false),
+        }
     }
 }
 
-struct Literal {
-    value: String,
+pub struct Column {
+    pub name: String,
 }
 
-impl LogicalExpression for Literal {
-    fn to_field(&self, _input: &LogicalPlan) -> Field {
-        Field::new(&self.value, DataType::Utf8, false)
-    }
+pub struct Literal {
+    pub value: String,
 }
