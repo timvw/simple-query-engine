@@ -1,4 +1,6 @@
 use std::fs::File;
+use arrow2::array::Array;
+use arrow2::chunk::Chunk;
 use arrow2::datatypes::Schema;
 use arrow2::io::parquet::read::*;
 use async_stream::stream;
@@ -32,12 +34,26 @@ impl DataSource for ParquetDataSource {
         reader.schema().clone()
     }
 
-    fn scan(&self, _projection: Vec<String>) -> RecordBatchStream {
+    fn scan(&self, projection: Vec<String>) -> RecordBatchStream {
         let reader = self.get_reader().unwrap();
+
+        let indexes = projection.iter()
+            .map(|p| self.schema().clone().fields.iter().enumerate().find(|(_idx, field)| field.name.eq(p)).map(|(idx, _field)| idx).unwrap())
+            .collect::<Vec<_>>();
+
+        // need to consider only relevant columns
         let output = stream! {
             for maybe_chunk in reader {
                 let chunk = maybe_chunk?;
-                yield Ok(chunk);
+
+                let arrays = chunk.arrays();
+                let mut r: Vec<std::sync::Arc<dyn Array>> = Vec::new();
+                for idx in &indexes {
+                    let array = arrays.get(*idx).unwrap();
+                    r.push(array.clone());
+                }
+
+                yield Ok(Chunk::new(r));
             }
         };
         Box::pin(output) as RecordBatchStream
@@ -81,17 +97,18 @@ mod tests {
         let test_file = "./parquet-testing/data/alltypes_plain.parquet";
         let parquet_datasource = ParquetDataSource::new(test_file.to_string())?;
 
-        let mut rbs = parquet_datasource.scan(vec![]);
+        let mut rbs = parquet_datasource.scan(vec!["id".to_string()]);
         let mut actual_row_count = 0;
 
         for rrb in rbs.next().await {
             let rb = rrb?;
+            assert_eq!(rb.columns().len(), 1); // only a single column is requested
             actual_row_count += rb.columns().get(0).unwrap().len();
         }
         assert_eq!(actual_row_count, 8);
 
-        //let x = parquet_datasource.scan(vec![]);
-        //pretty_print(x, schema).await;
+        let x = parquet_datasource.scan(vec!["id".to_string()]);
+        crate::pretty_print(x, parquet_datasource.schema()).await;
 
         Ok(())
     }
