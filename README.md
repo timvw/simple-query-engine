@@ -2,6 +2,19 @@
 Playground to learn about rust and query engines
 
 
+## Design
+
+Based on https://leanpub.com/how-query-engines-work.
+
+Pipeline:
+```pre
+Logical Plan -> 
+  Query optimizer::optimise -> Logical Plan
+    Query Planner::create_physical_plan -> Physical plan
+      Physical Plan::execute -> Result
+```
+
+
 ## Development
 First clone the test data repository:
 
