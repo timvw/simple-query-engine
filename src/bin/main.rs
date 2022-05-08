@@ -9,7 +9,13 @@ use simply_query_engine::pretty_print;
 async fn main() -> Result<()> {
     let test_file = "./parquet-testing/data/alltypes_plain.parquet";
     let datasource = ParquetDataSource::new(test_file.to_string())?;
-    let logical_plan = LogicalPlan::Scan(Scan::all_columns(Box::new(datasource)));
+    let scan = LogicalPlan::Scan(Scan::all_columns(Box::new(datasource)));
+    let logical_plan = LogicalPlan::Projection(Box::new(Projection {
+        input: scan,
+        expr: vec![LogicalExpression::Column(Column {
+            name: "id".to_string(),
+        })],
+    }));
     print!("{:?}", logical_plan.schema());
 
     let optimized_plan = QueryOptimiser::optimize(logical_plan);
