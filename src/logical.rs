@@ -4,18 +4,21 @@ use crate::schema_projected;
 
 pub enum LogicalPlan {
     Scan(Scan),
+    Projection(Box<Projection>),
 }
 
 impl LogicalPlan {
     pub fn schema(&self) -> Schema {
         match self {
             LogicalPlan::Scan(scan) => schema_projected(scan.datasource.schema(), scan.projection.clone()),
+            LogicalPlan::Projection(projection) => Schema::from(projection.expr.iter().map(|x|x.to_field(&projection.input)).collect::<Vec<_>>()),
         }
     }
 
-    pub fn children(&self) -> Vec<Box<LogicalPlan>> {
+    pub fn children(&self) -> Vec<&LogicalPlan> {
         match self {
             LogicalPlan::Scan(_scan) => vec![],
+            LogicalPlan::Projection(projection) => vec![&projection.input],
         }
     }
 }
@@ -34,8 +37,13 @@ impl Scan {
     }
 }
 
-trait LogicalExpression {
-    fn to_field(&self, input: LogicalPlan) -> Field;
+pub struct Projection {
+    pub input: LogicalPlan,
+    pub expr: Vec<Box<dyn LogicalExpression>>,
+}
+
+pub trait LogicalExpression {
+    fn to_field(&self, input: &LogicalPlan) -> Field;
 }
 
 struct Column {
@@ -43,7 +51,7 @@ struct Column {
 }
 
 impl LogicalExpression for Column {
-    fn to_field(&self, input: LogicalPlan) -> Field {
+    fn to_field(&self, input: &LogicalPlan) -> Field {
         input.schema().fields.iter().find(|f| f.name == self.name).unwrap().clone()
     }
 }
@@ -53,7 +61,7 @@ struct Literal {
 }
 
 impl LogicalExpression for Literal {
-    fn to_field(&self, _input: LogicalPlan) -> Field {
+    fn to_field(&self, _input: &LogicalPlan) -> Field {
         Field::new(&self.value, DataType::Utf8, false)
     }
 }
