@@ -1,10 +1,10 @@
-use std::sync::Arc;
+use crate::datasource::DataSource;
+use crate::{schema_projected, RecordBatch, RecordBatchStream};
 use arrow2::array::Array;
 use arrow2::datatypes::Schema;
-use crate::datasource::DataSource;
-use crate::{RecordBatch, RecordBatchStream, schema_projected};
+use std::sync::Arc;
 
-pub enum  PhyiscalPlan {
+pub enum PhyiscalPlan {
     ScanExec(ScanExec),
     ProjectionExec(Box<ProjectionExec>),
 }
@@ -12,7 +12,9 @@ pub enum  PhyiscalPlan {
 impl PhyiscalPlan {
     pub fn schema(&self) -> Schema {
         match self {
-            PhyiscalPlan::ScanExec(scan) => schema_projected(scan.datasource.schema(), scan.projection.clone()),
+            PhyiscalPlan::ScanExec(scan) => {
+                schema_projected(scan.datasource.schema(), scan.projection.clone())
+            }
             PhyiscalPlan::ProjectionExec(projection) => projection.schema.clone(),
         }
     }
@@ -49,8 +51,6 @@ impl PhysicalExpression {
             PhysicalExpression::ColumnExpression(_ce) => todo!(),
         }
     }
-
-
 }
 
 pub struct ColumnExpression {

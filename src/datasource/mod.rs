@@ -1,5 +1,5 @@
-use arrow2::datatypes::Schema;
 use crate::RecordBatchStream;
+use arrow2::datatypes::Schema;
 
 pub trait DataSource {
     fn schema(&self) -> Schema;

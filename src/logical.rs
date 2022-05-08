@@ -1,6 +1,6 @@
-use arrow2::datatypes::{DataType, Field, Schema};
 use crate::datasource::DataSource;
 use crate::schema_projected;
+use arrow2::datatypes::{DataType, Field, Schema};
 
 pub enum LogicalPlan {
     Scan(Scan),
@@ -10,8 +10,16 @@ pub enum LogicalPlan {
 impl LogicalPlan {
     pub fn schema(&self) -> Schema {
         match self {
-            LogicalPlan::Scan(scan) => schema_projected(scan.datasource.schema(), scan.projection.clone()),
-            LogicalPlan::Projection(projection) => Schema::from(projection.expr.iter().map(|x|x.to_field(&projection.input)).collect::<Vec<_>>()),
+            LogicalPlan::Scan(scan) => {
+                schema_projected(scan.datasource.schema(), scan.projection.clone())
+            }
+            LogicalPlan::Projection(projection) => Schema::from(
+                projection
+                    .expr
+                    .iter()
+                    .map(|x| x.to_field(&projection.input))
+                    .collect::<Vec<_>>(),
+            ),
         }
     }
 
@@ -50,8 +58,16 @@ pub enum LogicalExpression {
 impl LogicalExpression {
     fn to_field(&self, input: &LogicalPlan) -> Field {
         match self {
-            LogicalExpression::Column(column) => input.schema().fields.iter().find(|f| f.name == column.name).unwrap().clone(),
-            LogicalExpression::Liteal(literal) => Field::new(literal.value.clone(), DataType::Utf8, false),
+            LogicalExpression::Column(column) => input
+                .schema()
+                .fields
+                .iter()
+                .find(|f| f.name == column.name)
+                .unwrap()
+                .clone(),
+            LogicalExpression::Liteal(literal) => {
+                Field::new(literal.value.clone(), DataType::Utf8, false)
+            }
         }
     }
 }

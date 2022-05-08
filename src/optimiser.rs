@@ -1,7 +1,6 @@
 use crate::logical::LogicalPlan;
 
-pub struct QueryOptimiser {
-}
+pub struct QueryOptimiser {}
 
 impl QueryOptimiser {
     pub fn optimize(logical_plan: LogicalPlan) -> LogicalPlan {

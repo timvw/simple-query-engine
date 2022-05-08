@@ -1,12 +1,12 @@
-use std::fs::File;
+use crate::datasource::DataSource;
+use crate::error::Result;
+use crate::RecordBatchStream;
 use arrow2::array::Array;
 use arrow2::chunk::Chunk;
 use arrow2::datatypes::Schema;
 use arrow2::io::parquet::read::*;
 use async_stream::stream;
-use crate::error::Result;
-use crate::datasource::DataSource;
-use crate::RecordBatchStream;
+use std::fs::File;
 
 pub struct ParquetDataSource {
     file_path: String,
@@ -16,9 +16,7 @@ impl ParquetDataSource {
     pub fn new(file_path: String) -> Result<ParquetDataSource> {
         let file = File::open(file_path.clone())?;
         let _ = FileReader::try_new(file, None, None, None, None)?;
-        Ok(ParquetDataSource {
-            file_path,
-        })
+        Ok(ParquetDataSource { file_path })
     }
 
     fn get_reader(&self) -> Result<FileReader<File>> {
@@ -37,8 +35,18 @@ impl DataSource for ParquetDataSource {
     fn scan(&self, projection: Vec<String>) -> RecordBatchStream {
         let reader = self.get_reader().unwrap();
 
-        let indexes = projection.iter()
-            .map(|p| self.schema().clone().fields.iter().enumerate().find(|(_idx, field)| field.name.eq(p)).map(|(idx, _field)| idx).unwrap())
+        let indexes = projection
+            .iter()
+            .map(|p| {
+                self.schema()
+                    .clone()
+                    .fields
+                    .iter()
+                    .enumerate()
+                    .find(|(_idx, field)| field.name.eq(p))
+                    .map(|(idx, _field)| idx)
+                    .unwrap()
+            })
             .collect::<Vec<_>>();
 
         // need to consider only relevant columns
@@ -62,8 +70,8 @@ impl DataSource for ParquetDataSource {
 
 #[cfg(test)]
 mod tests {
-    use arrow2::datatypes::{DataType, Field, TimeUnit};
     use super::*;
+    use arrow2::datatypes::{DataType, Field, TimeUnit};
     use futures::StreamExt;
 
     #[test]
@@ -84,7 +92,11 @@ mod tests {
             Field::new("double_col", DataType::Float64, true),
             Field::new("date_string_col", DataType::Binary, true),
             Field::new("string_col", DataType::Binary, true),
-            Field::new("timestamp_col", DataType::Timestamp(TimeUnit::Nanosecond, None), true),
+            Field::new(
+                "timestamp_col",
+                DataType::Timestamp(TimeUnit::Nanosecond, None),
+                true,
+            ),
         ]);
 
         assert_eq!(actual_schema, expected_schema);

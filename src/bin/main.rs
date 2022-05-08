@@ -1,13 +1,12 @@
-use simply_query_engine::pretty_print;
-use simply_query_engine::error::*;
 use simply_query_engine::datasource::parquet::*;
+use simply_query_engine::error::*;
 use simply_query_engine::logical::*;
 use simply_query_engine::optimiser::QueryOptimiser;
 use simply_query_engine::planner::QueryPlanner;
+use simply_query_engine::pretty_print;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-
     let test_file = "/Users/timvw/src/github/simply-query-engine/test-data/alltypes_plain.parquet";
     let datasource = ParquetDataSource::new(test_file.to_string())?;
     let logical_plan = LogicalPlan::Scan(Scan::new(Box::new(datasource), vec![]));
