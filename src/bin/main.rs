@@ -7,9 +7,9 @@ use simply_query_engine::pretty_print;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let test_file = "/Users/timvw/src/github/simply-query-engine/test-data/alltypes_plain.parquet";
+    let test_file = "./parquet-testing/data/alltypes_plain.parquet";
     let datasource = ParquetDataSource::new(test_file.to_string())?;
-    let logical_plan = LogicalPlan::Scan(Scan::new(Box::new(datasource), vec![]));
+    let logical_plan = LogicalPlan::Scan(Scan::all_columns(Box::new(datasource)));
     print!("{:?}", logical_plan.schema());
 
     let optimized_plan = QueryOptimiser::optimize(logical_plan);

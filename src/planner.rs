@@ -8,7 +8,7 @@ impl QueryPlanner {
         match logical_plan {
             LogicalPlan::Scan(scan) => PhyiscalPlan::ScanExec(ScanExec {
                 datasource: scan.datasource,
-                projection: scan.projection.clone(),
+                projection: scan.projection,
             }),
             LogicalPlan::Projection(projection) => {
                 PhyiscalPlan::ProjectionExec(Box::new(ProjectionExec {

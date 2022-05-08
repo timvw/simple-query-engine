@@ -11,7 +11,7 @@ impl LogicalPlan {
     pub fn schema(&self) -> Schema {
         match self {
             LogicalPlan::Scan(scan) => {
-                schema_projected(scan.datasource.schema(), scan.projection.clone())
+                schema_projected(scan.datasource.schema(), scan.projection.to_vec())
             }
             LogicalPlan::Projection(projection) => Schema::from(
                 projection
@@ -37,7 +37,15 @@ pub struct Scan {
 }
 
 impl Scan {
-    pub fn new(datasource: Box<dyn DataSource>, projection: Vec<String>) -> Scan {
+    pub fn some_columns(datasource: Box<dyn DataSource>, projection: Vec<String>) -> Scan {
+        Scan {
+            datasource,
+            projection,
+        }
+    }
+    pub fn all_columns(datasource: Box<dyn DataSource>) -> Scan {
+        let ds_schema = datasource.schema();
+        let projection = ds_schema.fields.iter().map(|f| f.name.clone()).collect();
         Scan {
             datasource,
             projection,
