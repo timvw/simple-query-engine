@@ -20,7 +20,7 @@ impl PhyiscalPlan {
         match self {
             PhyiscalPlan::ScanExec(scan) => scan.datasource.scan(scan.projection.clone()),
             PhyiscalPlan::ProjectionExec(projection) => {
-                let mut rbs = projection.input.execute();
+                let rbs = projection.input.execute();
                 // TODO implement evalution of all expressions..
                 rbs
             }
@@ -46,7 +46,7 @@ pub enum PhysicalExpression {
 impl PhysicalExpression {
     pub fn evaluate(&self, _input: RecordBatch) -> &Arc<dyn Array> {
         match self {
-            PhysicalExpression::ColumnExpression(ce) => todo!(),
+            PhysicalExpression::ColumnExpression(_ce) => todo!(),
         }
     }
 

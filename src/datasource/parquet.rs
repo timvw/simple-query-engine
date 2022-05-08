@@ -48,7 +48,6 @@ impl DataSource for ParquetDataSource {
 mod tests {
     use arrow2::datatypes::{DataType, Field, TimeUnit};
     use super::*;
-    use super::super::super::pretty_print;
     use futures::StreamExt;
 
     #[test]
@@ -82,13 +81,17 @@ mod tests {
         let test_file = "./parquet-testing/data/alltypes_plain.parquet";
         let parquet_datasource = ParquetDataSource::new(test_file.to_string())?;
 
-        let schema = parquet_datasource.schema();
         let mut rbs = parquet_datasource.scan(vec![]);
-        for rb in rbs.next().await {
-            println!("batch: {:?}", rb);
+        let mut actual_row_count = 0;
+
+        for rrb in rbs.next().await {
+            let rb = rrb?;
+            actual_row_count += rb.columns().get(0).unwrap().len();
         }
-        let x = parquet_datasource.scan(vec![]);
-        pretty_print(x, schema).await;
+        assert_eq!(actual_row_count, 8);
+
+        //let x = parquet_datasource.scan(vec![]);
+        //pretty_print(x, schema).await;
 
         Ok(())
     }
