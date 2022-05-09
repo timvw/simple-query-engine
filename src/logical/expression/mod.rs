@@ -2,15 +2,18 @@ use crate::logical::expression::column::Column;
 use crate::logical::expression::literal::Literal;
 use crate::logical::plan::LogicalPlan;
 use arrow2::datatypes::Field;
+use crate::logical::expression::concatenate::Concatenate;
 
 pub trait LogicalExpressionCapabilities {
     fn to_field(&self, input: &LogicalPlan) -> Field;
+    fn extract_columns(&self) -> Vec<Column>;
 }
 
 #[derive(Debug, Clone)]
 pub enum LogicalExpression {
     Column(Column),
     Literal(Literal),
+    Concatenate(Concatenate),
 }
 
 impl LogicalExpression {
@@ -27,9 +30,19 @@ impl LogicalExpressionCapabilities for LogicalExpression {
         match self {
             LogicalExpression::Column(column) => column.to_field(input),
             LogicalExpression::Literal(literal) => literal.to_field(input),
+            LogicalExpression::Concatenate(concatenate) => concatenate.to_field(input),
+        }
+    }
+
+    fn extract_columns(&self) -> Vec<Column> {
+        match self {
+            LogicalExpression::Column(column) => column.extract_columns(),
+            LogicalExpression::Literal(literal) => literal.extract_columns(),
+            LogicalExpression::Concatenate(concatenate) => concatenate.extract_columns(),
         }
     }
 }
 
 pub mod column;
 pub mod literal;
+pub mod concatenate;

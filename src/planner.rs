@@ -1,5 +1,6 @@
 use crate::logical::expression::LogicalExpression;
 use crate::logical::plan::{LogicalPlan, LogicalPlanCapabilities};
+use crate::physical::expression::concatenate::Concatenate;
 use crate::physical::expression::PhysicalExpression;
 use crate::physical::plan::PhyiscalPlan;
 
@@ -44,6 +45,14 @@ impl QueryPlanner {
             }
             LogicalExpression::Literal(literal) => {
                 PhysicalExpression::literal(literal.name.clone(), literal.value.clone())
+            }
+            LogicalExpression::Concatenate(concatenate) => {
+                let expressions = concatenate.expressions.iter()
+                    .map(|e| Self::create_physical_expression(e, input))
+                    .collect();
+                PhysicalExpression::Concatenate(Concatenate{
+                  expressions
+                })
             }
         }
     }

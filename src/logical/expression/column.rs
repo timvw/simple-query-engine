@@ -17,4 +17,8 @@ impl LogicalExpressionCapabilities for Column {
             .unwrap()
             .clone()
     }
+
+    fn extract_columns(&self) -> Vec<Column> {
+        vec![self.clone()]
+    }
 }

@@ -22,10 +22,7 @@ impl LogicalPlanCapabilities for Projection {
     fn extract_columns(&self) -> Vec<Column> {
         self.expressions
             .iter()
-            .filter_map(|x| match x {
-                LogicalExpression::Column(column) => Some(column.clone()),
-                LogicalExpression::Literal(_) => None,
-            })
+            .flat_map(|e| e.extract_columns())
             .collect::<Vec<_>>()
     }
 
