@@ -68,7 +68,7 @@ fn get_data_dir(udf_env: &str, submodule_data: &str) -> Result<PathBuf, Box<dyn 
                     pb.display(),
                     udf_env
                 )
-                    .into());
+                .into());
             }
         }
     }

@@ -84,7 +84,7 @@ mod tests {
     #[test]
     fn test_parquet_schema() -> Result<()> {
         let test_file = format!("{}/alltypes_plain.parquet", parquet_test_data());
-        let parquet_datasource = Parquet::new(test_file.to_string())?;
+        let parquet_datasource = Parquet::new(test_file)?;
 
         let actual_schema = parquet_datasource.schema();
 

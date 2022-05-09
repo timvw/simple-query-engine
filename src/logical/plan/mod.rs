@@ -32,8 +32,16 @@ impl LogicalPlan {
 
     pub fn fmt_indent(&self, indent: usize) -> String {
         match self {
-            LogicalPlan::Scan(scan) => format!("{:indent$}Scan: {}; field_names={:?}", "", scan.datasource, scan.field_names),
-            LogicalPlan::Projection(projection) => format!("{:indent$}Projection: {:?}\n{}", "", projection.expressions, projection.input.fmt_indent(indent+1)),
+            LogicalPlan::Scan(scan) => format!(
+                "{:indent$}Scan: {}; field_names={:?}",
+                "", scan.datasource, scan.field_names
+            ),
+            LogicalPlan::Projection(projection) => format!(
+                "{:indent$}Projection: {:?}\n{}",
+                "",
+                projection.expressions,
+                projection.input.fmt_indent(indent + 1)
+            ),
         }
     }
 }
@@ -66,23 +74,23 @@ pub mod scan;
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::Result;
     use crate::util::test::parquet_test_data;
+    use crate::Result;
     use regex::Regex;
 
     #[test]
-    fn test_format_scan() -> Result<()>{
+    fn test_format_scan() -> Result<()> {
         let test_file = format!("{}/alltypes_plain.parquet", parquet_test_data());
         let datasource = DataSource::parquet(test_file)?;
 
         let expected_re = Regex::new(r"Scan: Parquet(.*?); field_names=(.*?)").unwrap();
 
         let scan_all_columns = LogicalPlan::scan_all_columns(datasource.clone());
-        println!("{}", format!("{}", scan_all_columns));
+        println!("{}", scan_all_columns);
         assert!(expected_re.is_match(&format!("{}", scan_all_columns)));
 
-        let scan_some_columns = LogicalPlan::scan(datasource.clone(), vec!["id".to_string()]);
-        println!("{}", format!("{}", scan_some_columns));
+        let scan_some_columns = LogicalPlan::scan(datasource, vec!["id".to_string()]);
+        println!("{}", scan_some_columns);
         assert!(expected_re.is_match(&format!("{}", scan_some_columns)));
 
         Ok(())
@@ -92,12 +100,15 @@ mod tests {
     fn test_format_projection() -> Result<()> {
         let test_file = format!("{}/alltypes_plain.parquet", parquet_test_data());
         let datasource = DataSource::parquet(test_file)?;
-        let scan_all_columns = LogicalPlan::scan_all_columns(datasource.clone());
-        let projection = LogicalPlan::projection(scan_all_columns.clone(), vec![LogicalExpression::column("id".to_string())]);
+        let scan_all_columns = LogicalPlan::scan_all_columns(datasource);
+        let projection = LogicalPlan::projection(
+            scan_all_columns,
+            vec![LogicalExpression::column("id".to_string())],
+        );
 
         let expected_re = Regex::new(r"Projection: (.*?)\n\s+Scan").unwrap();
 
-        println!("{}", format!("{}", projection));
+        println!("{}", projection);
         assert!(expected_re.is_match(&format!("{}", projection)));
 
         Ok(())

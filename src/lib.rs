@@ -1,3 +1,5 @@
+extern crate core;
+
 use arrow2::array::Array;
 use arrow2::chunk::Chunk;
 use arrow2::datatypes::{Field, Schema};

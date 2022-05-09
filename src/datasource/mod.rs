@@ -1,8 +1,8 @@
-use std::fmt;
-use std::fmt::Formatter;
 use crate::datasource::parquet::Parquet;
 use crate::{RecordBatchStream, Result};
 use arrow2::datatypes::Schema;
+use std::fmt;
+use std::fmt::Formatter;
 
 pub trait DataSourceCapabilities {
     /// Returns the schema of the underlying data (or should it be the schema of the projection?)
@@ -58,12 +58,12 @@ pub mod parquet;
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::Result;
     use crate::util::test::parquet_test_data;
+    use crate::Result;
     use regex::Regex;
 
     #[test]
-    fn test_format_parquet() -> Result<()>{
+    fn test_format_parquet() -> Result<()> {
         let test_file = format!("{}/alltypes_plain.parquet", parquet_test_data());
         let datasource = DataSource::parquet(test_file)?;
 
