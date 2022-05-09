@@ -12,13 +12,11 @@ impl QueryPlanner {
                 datasource: scan.datasource,
                 projection: scan.projection,
             }),
-            LogicalPlan::Projection(projection) => {
-                PhyiscalPlan::Projection(Box::new(Projection {
-                    schema: projection.input.schema(),
-                    input: Self::create_physical_plan(projection.input),
-                    expr: vec![],
-                }))
-            }
+            LogicalPlan::Projection(projection) => PhyiscalPlan::Projection(Box::new(Projection {
+                schema: projection.input.schema(),
+                input: Self::create_physical_plan(projection.input),
+                expr: vec![],
+            })),
         }
     }
 }
