@@ -1,5 +1,11 @@
+use crate::logical::expression::column::Column;
+use crate::logical::expression::literal::Literal;
 use crate::logical::plan::{LogicalPlan, LogicalPlanCapabilities};
 use arrow2::datatypes::{DataType, Field};
+
+pub trait LogicalExpressionCapabilities {
+    fn to_field(&self, input: &LogicalPlan) -> Field;
+}
 
 pub enum LogicalExpression {
     Column(Column),
@@ -23,10 +29,5 @@ impl LogicalExpression {
     }
 }
 
-pub struct Column {
-    pub name: String,
-}
-
-pub struct Literal {
-    pub value: String,
-}
+pub mod column;
+pub mod literal;
