@@ -5,10 +5,12 @@ use crate::physical::plan::scan::Scan;
 use crate::RecordBatchStream;
 use arrow2::datatypes::Schema;
 use std::fmt;
+use async_trait::async_trait;
 
+#[async_trait]
 pub trait PhysicalPlanCapabilities {
     fn schema(&self) -> Schema;
-    fn execute(&self) -> RecordBatchStream;
+    async fn execute(&self) -> RecordBatchStream;
 }
 
 #[derive(Debug, Clone)]
@@ -52,6 +54,7 @@ impl PhyiscalPlan {
     }
 }
 
+#[async_trait]
 impl PhysicalPlanCapabilities for PhyiscalPlan {
     fn schema(&self) -> Schema {
         match self {
@@ -59,11 +62,11 @@ impl PhysicalPlanCapabilities for PhyiscalPlan {
             PhyiscalPlan::Projection(projection) => projection.schema(),
         }
     }
-    fn execute(&self) -> RecordBatchStream {
+    async fn execute(&self) -> RecordBatchStream {
         match self {
             // does a scan need a projection?
-            PhyiscalPlan::Scan(scan) => scan.execute(),
-            PhyiscalPlan::Projection(projection) => projection.execute(),
+            PhyiscalPlan::Scan(scan) => scan.execute().await,
+            PhyiscalPlan::Projection(projection) => projection.execute().await,
         }
     }
 }

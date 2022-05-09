@@ -4,7 +4,7 @@ use crate::RecordBatch;
 use arrow2::array::Array;
 use std::sync::Arc;
 
-trait PhysicalExpressionCapabilities {
+pub trait PhysicalExpressionCapabilities {
     fn evaluate(&self, input: RecordBatch) -> Arc<dyn Array>;
 }
 
