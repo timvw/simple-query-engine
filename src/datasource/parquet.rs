@@ -140,7 +140,7 @@ mod tests {
 
         if let Some(rrb) = rbs.next().await {
             let rb = rrb?;
-            assert_eq!(rb.columns().len(), 1); // only a single column is requested
+            assert_eq!(rb.columns().len(), 1); // only a single column.rs is requested
             actual_row_count += rb.columns().get(0).unwrap().len();
         }
         assert_eq!(actual_row_count, 8);

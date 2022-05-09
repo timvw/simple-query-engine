@@ -5,6 +5,7 @@ use simply_query_engine::logical::plan::{
     projection::Projection, scan::Scan, LogicalPlan, LogicalPlanCapabilities,
 };
 use simply_query_engine::optimiser::QueryOptimiser;
+use simply_query_engine::physical::plan::PhysicalPlanCapabilities;
 use simply_query_engine::planner::QueryPlanner;
 use simply_query_engine::pretty_print;
 
