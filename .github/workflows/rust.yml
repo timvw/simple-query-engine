@@ -14,8 +14,8 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      ARROW_TEST_DATA: /__w/simply-query-engine/simply-query-engine/testing/data
-      PARQUET_TEST_DATA: /__w/simply-query-engine/simply-query-engine/parquet-testing/data
+      ARROW_TEST_DATA: testing/data
+      PARQUET_TEST_DATA: parquet-testing/data
     steps:
     - uses: actions/checkout@v3
       with:
