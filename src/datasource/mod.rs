@@ -1,6 +1,6 @@
 use crate::RecordBatchStream;
 use arrow2::datatypes::Schema;
-use crate::datasource::parquet::ParquetDataSource;
+use crate::datasource::parquet::Parquet;
 
 pub trait DataSourceCapabilities {
     /// Returns the schema of the underlying data (or should it be the schema of the projection?)
@@ -18,7 +18,7 @@ pub trait DataSourceCapabilities {
 }
 
 pub enum DataSource {
-    Parquet(ParquetDataSource),
+    Parquet(Parquet),
 }
 
 impl DataSourceCapabilities for DataSource {

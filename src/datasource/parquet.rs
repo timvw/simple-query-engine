@@ -8,15 +8,15 @@ use arrow2::io::parquet::read::*;
 use async_stream::stream;
 use std::fs::File;
 
-pub struct ParquetDataSource {
+pub struct Parquet {
     file_path: String,
 }
 
-impl ParquetDataSource {
-    pub fn new(file_path: String) -> Result<ParquetDataSource> {
+impl Parquet {
+    pub fn new(file_path: String) -> Result<Parquet> {
         let file = File::open(file_path.clone())?;
         let _ = FileReader::try_new(file, None, None, None, None)?;
-        Ok(ParquetDataSource { file_path })
+        Ok(Parquet { file_path })
     }
 
     fn get_reader(&self) -> Result<FileReader<File>> {
@@ -26,7 +26,7 @@ impl ParquetDataSource {
     }
 }
 
-impl DataSourceCapabilities for ParquetDataSource {
+impl DataSourceCapabilities for Parquet {
     fn schema(&self) -> Schema {
         let reader = self.get_reader().unwrap();
         reader.schema().clone()
@@ -82,7 +82,7 @@ mod tests {
     #[test]
     fn test_parquet_schema() -> Result<()> {
         let test_file = "./parquet-testing/data/alltypes_plain.parquet";
-        let parquet_datasource = ParquetDataSource::new(test_file.to_string())?;
+        let parquet_datasource = Parquet::new(test_file.to_string())?;
 
         let actual_schema = parquet_datasource.schema();
 
@@ -112,7 +112,7 @@ mod tests {
     #[tokio::test]
     async fn test_scan_parquet_without_projection() -> Result<()> {
         let test_file = "./parquet-testing/data/alltypes_plain.parquet";
-        let parquet_datasource = ParquetDataSource::new(test_file.to_string())?;
+        let parquet_datasource = Parquet::new(test_file.to_string())?;
 
         let mut rbs = parquet_datasource.scan(None);
         let mut actual_row_count = 0;
@@ -133,7 +133,7 @@ mod tests {
     #[tokio::test]
     async fn test_scan_parquet_with_projection() -> Result<()> {
         let test_file = "./parquet-testing/data/alltypes_plain.parquet";
-        let parquet_datasource = ParquetDataSource::new(test_file.to_string())?;
+        let parquet_datasource = Parquet::new(test_file.to_string())?;
 
         let mut rbs = parquet_datasource.scan(Some(vec!["id".to_string()]));
         let mut actual_row_count = 0;

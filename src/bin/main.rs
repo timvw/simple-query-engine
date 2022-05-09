@@ -1,4 +1,4 @@
-use simply_query_engine::datasource::{DataSource, parquet::ParquetDataSource};
+use simply_query_engine::datasource::{DataSource, parquet::Parquet};
 use simply_query_engine::error::*;
 use simply_query_engine::logical::*;
 use simply_query_engine::optimiser::QueryOptimiser;
@@ -8,7 +8,7 @@ use simply_query_engine::pretty_print;
 #[tokio::main]
 async fn main() -> Result<()> {
     let test_file = "./parquet-testing/data/alltypes_plain.parquet";
-    let datasource = DataSource::Parquet(ParquetDataSource::new(test_file.to_string())?);
+    let datasource = DataSource::Parquet(Parquet::new(test_file.to_string())?);
     let scan = LogicalPlan::Scan(Scan::all_columns(datasource));
     let logical_plan = LogicalPlan::Projection(Box::new(Projection {
         input: scan,
