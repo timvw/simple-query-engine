@@ -1619,6 +1619,7 @@ dependencies = [
  "arrow2",
  "async-stream",
  "futures",
+ "regex",
  "tokio",
 ]
 

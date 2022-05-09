@@ -10,7 +10,7 @@ use std::fs::File;
 
 #[derive(Debug, Clone)]
 pub struct Parquet {
-    file_path: String,
+    pub file_path: String,
 }
 
 impl Parquet {
