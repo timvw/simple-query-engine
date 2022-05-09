@@ -90,6 +90,7 @@ mod tests {
     use crate::physical::plan::PhysicalPlanCapabilities;
     use crate::Result;
     use crate::util::test::parquet_test_data;
+    use futures::stream::StreamExt;
 
     #[tokio::test]
     async fn test_e2e() -> Result<()>{
@@ -111,8 +112,15 @@ mod tests {
         let schema = phyiscal_plan.schema();
         assert_eq!(schema.fields.len(), 2);
 
-        let rbs = phyiscal_plan.execute().await;
-
+        let mut rbs = phyiscal_plan.execute().await;
+        let mut counter = 0;
+        while let Some(rrb) = rbs.next().await {
+            let rb = rrb?;
+            // expect 2 columns
+            assert_eq!(rb.columns().len(), 2);
+            counter += rb.len();
+        }
+        assert_eq!(counter, 8); // expect 8 rows
 
         Ok(())
     }
