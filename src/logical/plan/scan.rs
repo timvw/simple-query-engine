@@ -1,8 +1,8 @@
 use crate::datasource::{DataSource, DataSourceCapabilities};
+use crate::logical::expression::column::Column;
 use crate::logical::plan::{LogicalPlan, LogicalPlanCapabilities};
 use crate::schema_projected;
 use arrow2::datatypes::Schema;
-use crate::logical::expression::column::Column;
 
 #[derive(Debug, Clone)]
 pub struct Scan {

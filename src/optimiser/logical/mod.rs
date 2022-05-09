@@ -13,7 +13,11 @@ fn pushdown_projection_columns_to_scan_field_names(logical_plan: LogicalPlan) ->
     match logical_plan {
         LogicalPlan::Projection(ref projection) => match &projection.input {
             LogicalPlan::Scan(scan) => {
-                let field_names = projection.extract_columns().iter().map(|c| c.name.clone()).collect::<Vec<String>>();
+                let field_names = projection
+                    .extract_columns()
+                    .iter()
+                    .map(|c| c.name.clone())
+                    .collect::<Vec<String>>();
                 let updated_scan_plan = LogicalPlan::scan(scan.datasource.clone(), field_names);
                 LogicalPlan::projection(updated_scan_plan, projection.expressions.clone())
             }

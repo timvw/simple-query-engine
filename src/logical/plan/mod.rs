@@ -1,10 +1,10 @@
 use crate::datasource::DataSource;
+use crate::logical::expression::column::Column;
 use crate::logical::expression::LogicalExpression;
 use crate::logical::plan::projection::Projection;
 use crate::logical::plan::scan::Scan;
 use arrow2::datatypes::Schema;
 use std::fmt;
-use crate::logical::expression::column::Column;
 
 pub trait LogicalPlanCapabilities {
     /// Returns the schema of this plan
