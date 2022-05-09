@@ -1,10 +1,9 @@
 # simple-query-engine
 Playground to learn about rust and query engines
 
+Based on "How query engines work" by [Andy Grove](https://github.com/andygrove).
 
 ## Design
-
-Based on https://leanpub.com/how-query-engines-work.
 
 Pipeline:
 ```pre
@@ -13,6 +12,13 @@ Logical Plan ->
     Query Planner::create_physical_plan -> Physical plan
       Physical Plan::execute -> Result
 ```
+
+## Resources
+
+* https://leanpub.com/how-query-engines-work
+* https://github.com/andygrove/how-query-engines-work
+* https://tokio.rs/
+* https://docs.rs/async-stream/latest/async_stream/
 
 
 ## Development
