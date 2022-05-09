@@ -1,5 +1,5 @@
-use crate::physical::plan::projection::ProjectionExec;
-use crate::physical::plan::scan::ScanExec;
+use crate::physical::plan::projection::Projection;
+use crate::physical::plan::scan::Scan;
 use crate::RecordBatchStream;
 use arrow2::datatypes::Schema;
 
@@ -9,22 +9,22 @@ pub trait PhysicalPlanCapabilities {
 }
 
 pub enum PhyiscalPlan {
-    ScanExec(ScanExec),
-    ProjectionExec(Box<ProjectionExec>),
+    Scan(Scan),
+    Projection(Box<Projection>),
 }
 
 impl PhysicalPlanCapabilities for PhyiscalPlan {
     fn schema(&self) -> Schema {
         match self {
-            PhyiscalPlan::ScanExec(scan) => scan.schema(),
-            PhyiscalPlan::ProjectionExec(projection) => projection.schema(),
+            PhyiscalPlan::Scan(scan) => scan.schema(),
+            PhyiscalPlan::Projection(projection) => projection.schema(),
         }
     }
     fn execute(&self) -> RecordBatchStream {
         match self {
             // does a scan need a projection?
-            PhyiscalPlan::ScanExec(scan) => scan.execute(),
-            PhyiscalPlan::ProjectionExec(projection) => projection.execute(),
+            PhyiscalPlan::Scan(scan) => scan.execute(),
+            PhyiscalPlan::Projection(projection) => projection.execute(),
         }
     }
 }
