@@ -11,7 +11,7 @@ impl QueryPlanner {
         match logical_plan {
             LogicalPlan::Scan(scan) => PhyiscalPlan::scan(scan.datasource, scan.field_names),
             LogicalPlan::Projection(projection) => {
-                let schema = projection.input.schema();
+                let schema = projection.schema();
                 let expressions = projection
                     .expressions
                     .iter()
