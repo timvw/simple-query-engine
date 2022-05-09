@@ -4,8 +4,8 @@ use crate::physical::plan::projection::Projection;
 use crate::physical::plan::scan::Scan;
 use crate::RecordBatchStream;
 use arrow2::datatypes::Schema;
-use std::fmt;
 use async_trait::async_trait;
+use std::fmt;
 
 #[async_trait]
 pub trait PhysicalPlanCapabilities {

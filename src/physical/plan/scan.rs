@@ -10,7 +10,6 @@ pub struct Scan {
     pub field_names: Vec<String>,
 }
 
-
 #[async_trait]
 impl PhysicalPlanCapabilities for Scan {
     fn schema(&self) -> Schema {

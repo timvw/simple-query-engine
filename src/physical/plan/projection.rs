@@ -1,11 +1,11 @@
-use arrow2::chunk::Chunk;
 use crate::physical::expression::{PhysicalExpression, PhysicalExpressionCapabilities};
 use crate::physical::plan::{PhyiscalPlan, PhysicalPlanCapabilities};
 use crate::RecordBatchStream;
+use arrow2::chunk::Chunk;
 use arrow2::datatypes::Schema;
 use async_stream::stream;
-use futures::stream::StreamExt;
 use async_trait::async_trait;
+use futures::stream::StreamExt;
 
 #[derive(Debug, Clone)]
 pub struct Projection {
