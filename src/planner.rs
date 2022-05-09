@@ -1,4 +1,4 @@
-use crate::logical::LogicalPlan;
+use crate::logical::plan::{LogicalPlan, LogicalPlanCapabilities};
 use crate::physical::{PhyiscalPlan, ProjectionExec, ScanExec};
 
 pub struct QueryPlanner {}

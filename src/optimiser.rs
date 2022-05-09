@@ -1,4 +1,4 @@
-use crate::logical::LogicalPlan;
+use crate::logical::plan::LogicalPlan;
 
 pub struct QueryOptimiser {}
 

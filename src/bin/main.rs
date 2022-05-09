@@ -1,6 +1,9 @@
-use simply_query_engine::datasource::{DataSource, parquet::Parquet};
+use simply_query_engine::datasource::{parquet::Parquet, DataSource};
 use simply_query_engine::error::*;
-use simply_query_engine::logical::*;
+use simply_query_engine::logical::expression::{Column, LogicalExpression};
+use simply_query_engine::logical::plan::{
+    projection::Projection, scan::Scan, LogicalPlan, LogicalPlanCapabilities,
+};
 use simply_query_engine::optimiser::QueryOptimiser;
 use simply_query_engine::planner::QueryPlanner;
 use simply_query_engine::pretty_print;
