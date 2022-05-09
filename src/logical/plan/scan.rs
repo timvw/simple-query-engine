@@ -2,6 +2,7 @@ use crate::datasource::{DataSource, DataSourceCapabilities};
 use crate::logical::plan::{LogicalPlan, LogicalPlanCapabilities};
 use crate::schema_projected;
 use arrow2::datatypes::Schema;
+use crate::logical::expression::column::Column;
 
 #[derive(Debug, Clone)]
 pub struct Scan {
@@ -29,6 +30,10 @@ impl Scan {
 impl LogicalPlanCapabilities for Scan {
     fn schema(&self) -> Schema {
         schema_projected(self.datasource.schema(), self.field_names.to_vec())
+    }
+
+    fn extract_columns(&self) -> Vec<Column> {
+        vec![]
     }
 
     fn children(&self) -> Vec<&LogicalPlan> {

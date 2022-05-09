@@ -4,11 +4,12 @@ use arrow2::datatypes::{DataType, Field};
 
 #[derive(Debug, Clone)]
 pub struct Literal {
+    pub name: String,
     pub value: String,
 }
 
 impl LogicalExpressionCapabilities for Literal {
     fn to_field(&self, _input: &LogicalPlan) -> Field {
-        Field::new(self.value.clone(), DataType::Utf8, false)
+        Field::new(self.name.clone(), DataType::Utf8, false)
     }
 }

@@ -4,6 +4,7 @@ use crate::logical::plan::projection::Projection;
 use crate::logical::plan::scan::Scan;
 use arrow2::datatypes::Schema;
 use std::fmt;
+use crate::logical::expression::column::Column;
 
 pub trait LogicalPlanCapabilities {
     /// Returns the schema of this plan
@@ -11,6 +12,9 @@ pub trait LogicalPlanCapabilities {
 
     /// Returns the plans on which this plan depends
     fn children(&self) -> Vec<&LogicalPlan>;
+
+    /// Returns the columns that are used in this plan
+    fn extract_columns(&self) -> Vec<Column>;
 }
 
 #[derive(Debug, Clone)]
@@ -51,6 +55,13 @@ impl LogicalPlanCapabilities for LogicalPlan {
         match self {
             LogicalPlan::Scan(scan) => scan.schema(),
             LogicalPlan::Projection(projection) => projection.schema(),
+        }
+    }
+
+    fn extract_columns(&self) -> Vec<Column> {
+        match self {
+            LogicalPlan::Scan(scan) => scan.extract_columns(),
+            LogicalPlan::Projection(projection) => projection.extract_columns(),
         }
     }
 

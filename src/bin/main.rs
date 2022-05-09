@@ -14,7 +14,10 @@ async fn main() -> Result<()> {
 
     let logical_plan = LogicalPlan::projection(
         LogicalPlan::scan_all_columns(datasource),
-        vec![LogicalExpression::column("id".to_string())],
+        vec![
+            LogicalExpression::column("id".to_string()),
+            LogicalExpression::literal("name".to_string(), "Mr. Literal".to_string()),
+        ],
     );
 
     //println!("{:?}", logical_plan.schema());

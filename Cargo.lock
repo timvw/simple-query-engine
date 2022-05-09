@@ -1618,6 +1618,7 @@ version = "0.1.0"
 dependencies = [
  "arrow2",
  "async-stream",
+ "async-trait",
  "futures",
  "regex",
  "tokio",

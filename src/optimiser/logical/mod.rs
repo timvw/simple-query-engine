@@ -1,24 +1,19 @@
-use crate::logical::expression::LogicalExpressionCapabilities;
-use crate::logical::plan::LogicalPlan;
+use crate::logical::plan::{LogicalPlan, LogicalPlanCapabilities};
 
 #[derive(Debug, Copy, Clone)]
 pub struct QueryOptimiser {}
 
 impl QueryOptimiser {
     pub fn optimize(logical_plan: LogicalPlan) -> LogicalPlan {
-        pushdown_projection_expressions_to_scan_field_names(logical_plan)
+        pushdown_projection_columns_to_scan_field_names(logical_plan)
     }
 }
 
-fn pushdown_projection_expressions_to_scan_field_names(logical_plan: LogicalPlan) -> LogicalPlan {
+fn pushdown_projection_columns_to_scan_field_names(logical_plan: LogicalPlan) -> LogicalPlan {
     match logical_plan {
         LogicalPlan::Projection(ref projection) => match &projection.input {
             LogicalPlan::Scan(scan) => {
-                let field_names = projection
-                    .expressions
-                    .iter()
-                    .map(|x| x.to_field(&projection.input).name)
-                    .collect::<Vec<_>>();
+                let field_names = projection.extract_columns().iter().map(|c| c.name.clone()).collect::<Vec<String>>();
                 let updated_scan_plan = LogicalPlan::scan(scan.datasource.clone(), field_names);
                 LogicalPlan::projection(updated_scan_plan, projection.expressions.clone())
             }
@@ -43,7 +38,10 @@ mod tests {
         let scan = Scan::all_columns(datasource);
         let logical_plan = LogicalPlan::projection(
             LogicalPlan::Scan(scan.clone()),
-            vec![LogicalExpression::column("id".to_string())],
+            vec![
+                LogicalExpression::column("id".to_string()),
+                LogicalExpression::literal("test".to_string(), "Mr Literalis".to_string()),
+            ],
         );
 
         // initially 11 fields are scanned
