@@ -1,9 +1,7 @@
 use simply_query_engine::datasource::DataSource;
 use simply_query_engine::error::*;
-use simply_query_engine::logical::expression::{column::Column, LogicalExpression};
-use simply_query_engine::logical::plan::{
-    projection::Projection, scan::Scan, LogicalPlan, LogicalPlanCapabilities,
-};
+use simply_query_engine::logical::expression::LogicalExpression;
+use simply_query_engine::logical::plan::{LogicalPlan, LogicalPlanCapabilities};
 use simply_query_engine::optimiser::QueryOptimiser;
 use simply_query_engine::physical::plan::PhysicalPlanCapabilities;
 use simply_query_engine::planner::QueryPlanner;
@@ -13,13 +11,12 @@ use simply_query_engine::pretty_print;
 async fn main() -> Result<()> {
     let test_file = "./parquet-testing/data/alltypes_plain.parquet";
     let datasource = DataSource::parquet(test_file.to_string())?;
-    let scan = LogicalPlan::Scan(Scan::all_columns(datasource));
-    let logical_plan = LogicalPlan::Projection(Box::new(Projection {
-        input: scan,
-        expr: vec![LogicalExpression::Column(Column {
-            name: "id".to_string(),
-        })],
-    }));
+
+    let logical_plan = LogicalPlan::projection(
+        LogicalPlan::scan_all_columns(datasource),
+        vec![LogicalExpression::column("id".to_string())],
+    );
+
     print!("{:?}", logical_plan.schema());
 
     let optimized_plan = QueryOptimiser::optimize(logical_plan);

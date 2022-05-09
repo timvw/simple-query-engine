@@ -5,14 +5,14 @@ use arrow2::datatypes::Schema;
 
 pub struct Scan {
     pub datasource: DataSource,
-    pub projection: Vec<String>,
+    pub field_names: Vec<String>,
 }
 
 impl Scan {
     pub fn some_columns(datasource: DataSource, projection: Vec<String>) -> Scan {
         Scan {
             datasource,
-            projection,
+            field_names: projection,
         }
     }
     pub fn all_columns(datasource: DataSource) -> Scan {
@@ -20,14 +20,14 @@ impl Scan {
         let projection = ds_schema.fields.iter().map(|f| f.name.clone()).collect();
         Scan {
             datasource,
-            projection,
+            field_names: projection,
         }
     }
 }
 
 impl LogicalPlanCapabilities for Scan {
     fn schema(&self) -> Schema {
-        schema_projected(self.datasource.schema(), self.projection.to_vec())
+        schema_projected(self.datasource.schema(), self.field_names.to_vec())
     }
 
     fn children(&self) -> Vec<&LogicalPlan> {

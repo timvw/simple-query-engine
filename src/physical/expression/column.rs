@@ -4,7 +4,7 @@ use arrow2::array::Array;
 use std::sync::Arc;
 
 pub struct Column {
-    pub idx: usize,
+    pub index: usize,
 }
 
 impl PhysicalExpressionCapabilities for Column {

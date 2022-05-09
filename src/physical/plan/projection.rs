@@ -6,7 +6,7 @@ use arrow2::datatypes::Schema;
 pub struct Projection {
     pub input: PhyiscalPlan,
     pub schema: Schema,
-    pub expr: Vec<PhysicalExpression>,
+    pub expressions: Vec<PhysicalExpression>,
 }
 
 impl PhysicalPlanCapabilities for Projection {

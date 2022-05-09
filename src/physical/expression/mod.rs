@@ -11,6 +11,12 @@ pub enum PhysicalExpression {
     Column(Column),
 }
 
+impl PhysicalExpression {
+    pub fn column(index: usize) -> PhysicalExpression {
+        PhysicalExpression::Column(Column { index })
+    }
+}
+
 impl PhysicalExpressionCapabilities for PhysicalExpression {
     fn evaluate(&self, input: RecordBatch) -> &Arc<dyn Array> {
         match self {

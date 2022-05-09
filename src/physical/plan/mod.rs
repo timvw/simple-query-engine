@@ -1,3 +1,5 @@
+use crate::datasource::DataSource;
+use crate::physical::expression::PhysicalExpression;
 use crate::physical::plan::projection::Projection;
 use crate::physical::plan::scan::Scan;
 use crate::RecordBatchStream;
@@ -11,6 +13,26 @@ pub trait PhysicalPlanCapabilities {
 pub enum PhyiscalPlan {
     Scan(Scan),
     Projection(Box<Projection>),
+}
+
+impl PhyiscalPlan {
+    pub fn scan(datasource: DataSource, field_names: Vec<String>) -> PhyiscalPlan {
+        PhyiscalPlan::Scan(Scan {
+            datasource,
+            field_names,
+        })
+    }
+    pub fn projection(
+        input: PhyiscalPlan,
+        schema: Schema,
+        expressions: Vec<PhysicalExpression>,
+    ) -> PhyiscalPlan {
+        PhyiscalPlan::Projection(Box::new(Projection {
+            input,
+            schema,
+            expressions,
+        }))
+    }
 }
 
 impl PhysicalPlanCapabilities for PhyiscalPlan {

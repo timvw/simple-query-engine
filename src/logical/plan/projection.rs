@@ -1,16 +1,16 @@
-use crate::logical::expression::LogicalExpression;
+use crate::logical::expression::{LogicalExpression, LogicalExpressionCapabilities};
 use crate::logical::plan::{LogicalPlan, LogicalPlanCapabilities};
 use arrow2::datatypes::Schema;
 
 pub struct Projection {
     pub input: LogicalPlan,
-    pub expr: Vec<LogicalExpression>,
+    pub expressions: Vec<LogicalExpression>,
 }
 
 impl LogicalPlanCapabilities for Projection {
     fn schema(&self) -> Schema {
         Schema::from(
-            self.expr
+            self.expressions
                 .iter()
                 .map(|x| x.to_field(&self.input))
                 .collect::<Vec<_>>(),

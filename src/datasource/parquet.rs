@@ -32,10 +32,10 @@ impl DataSourceCapabilities for Parquet {
         reader.schema().clone()
     }
 
-    fn scan(&self, maybe_projection: Option<Vec<String>>) -> RecordBatchStream {
+    fn scan(&self, maybe_field_names: Option<Vec<String>>) -> RecordBatchStream {
         let reader = self.get_reader().unwrap();
 
-        let maybe_indexes = maybe_projection.map(|projection| {
+        let maybe_indexes = maybe_field_names.map(|projection| {
             projection
                 .iter()
                 .map(|p| {

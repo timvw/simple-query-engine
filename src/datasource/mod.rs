@@ -1,5 +1,5 @@
 use crate::datasource::parquet::Parquet;
-use crate::{Result, RecordBatchStream};
+use crate::{RecordBatchStream, Result};
 use arrow2::datatypes::Schema;
 
 pub trait DataSourceCapabilities {
@@ -10,11 +10,11 @@ pub trait DataSourceCapabilities {
     ///
     /// # Arguments
     ///
-    /// * `maybe_projection` - When provided restricts the returned fields to the ones provided, otherwise all available fields
+    /// * `maybe_field_names` - When provided restricts the returned fields to the ones provided, otherwise all available fields
     ///
     /// # Examples
     /// let ds: DataSource = todo!();
-    fn scan(&self, maybe_projection: Option<Vec<String>>) -> RecordBatchStream;
+    fn scan(&self, maybe_field_names: Option<Vec<String>>) -> RecordBatchStream;
 }
 
 pub enum DataSource {
@@ -35,9 +35,9 @@ impl DataSourceCapabilities for DataSource {
         }
     }
 
-    fn scan(&self, maybe_projection: Option<Vec<String>>) -> RecordBatchStream {
+    fn scan(&self, maybe_field_names: Option<Vec<String>>) -> RecordBatchStream {
         match self {
-            DataSource::Parquet(x) => x.scan(maybe_projection),
+            DataSource::Parquet(x) => x.scan(maybe_field_names),
         }
     }
 }
