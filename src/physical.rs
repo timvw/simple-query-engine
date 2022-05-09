@@ -20,7 +20,8 @@ impl PhyiscalPlan {
     }
     pub fn execute(&self) -> RecordBatchStream {
         match self {
-            PhyiscalPlan::ScanExec(scan) => scan.datasource.scan(scan.projection.clone()),
+            // does a scan need a projection?
+            PhyiscalPlan::ScanExec(scan) => scan.datasource.scan(Some(scan.projection.clone())),
             PhyiscalPlan::ProjectionExec(projection) => {
                 // TODO implement evalution of all expressions..
                 projection.input.execute()
