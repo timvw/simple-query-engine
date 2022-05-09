@@ -3,6 +3,7 @@ use crate::physical::plan::PhysicalPlanCapabilities;
 use crate::{schema_projected, RecordBatchStream};
 use arrow2::datatypes::Schema;
 
+#[derive(Debug, Clone)]
 pub struct Scan {
     pub datasource: DataSource,
     pub field_names: Vec<String>,

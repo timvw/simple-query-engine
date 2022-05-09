@@ -7,6 +7,7 @@ pub trait LogicalExpressionCapabilities {
     fn to_field(&self, input: &LogicalPlan) -> Field;
 }
 
+#[derive(Debug, Clone)]
 pub enum LogicalExpression {
     Column(Column),
     Liteal(Literal),

@@ -8,6 +8,7 @@ use arrow2::io::parquet::read::*;
 use async_stream::stream;
 use std::fs::File;
 
+#[derive(Debug, Clone)]
 pub struct Parquet {
     file_path: String,
 }

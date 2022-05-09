@@ -7,6 +7,7 @@ trait PhysicalExpressionCapabilities {
     fn evaluate(&self, input: RecordBatch) -> &Arc<dyn Array>;
 }
 
+#[derive(Debug, Copy, Clone)]
 pub enum PhysicalExpression {
     Column(Column),
 }

@@ -3,6 +3,7 @@ use crate::physical::plan::{PhyiscalPlan, PhysicalPlanCapabilities};
 use crate::RecordBatchStream;
 use arrow2::datatypes::Schema;
 
+#[derive(Debug, Clone)]
 pub struct Projection {
     pub input: PhyiscalPlan,
     pub schema: Schema,

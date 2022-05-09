@@ -17,6 +17,7 @@ pub trait DataSourceCapabilities {
     fn scan(&self, maybe_field_names: Option<Vec<String>>) -> RecordBatchStream;
 }
 
+#[derive(Debug, Clone)]
 pub enum DataSource {
     Parquet(Parquet),
 }

@@ -17,11 +17,13 @@ async fn main() -> Result<()> {
         vec![LogicalExpression::column("id".to_string())],
     );
 
+    println!("{:?}", logical_plan);
     print!("{:?}", logical_plan.schema());
 
     let optimized_plan = QueryOptimiser::optimize(logical_plan);
 
     let phyiscal_plan = QueryPlanner::create_physical_plan(optimized_plan);
+    println!("{:?}", phyiscal_plan);
 
     let result = phyiscal_plan.execute();
     let schema = phyiscal_plan.schema();

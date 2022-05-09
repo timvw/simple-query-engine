@@ -3,6 +3,7 @@ use crate::RecordBatch;
 use arrow2::array::Array;
 use std::sync::Arc;
 
+#[derive(Debug, Copy, Clone)]
 pub struct Column {
     pub index: usize,
 }

@@ -1,5 +1,6 @@
 use crate::logical::plan::LogicalPlan;
 
+#[derive(Debug, Copy, Clone)]
 pub struct QueryOptimiser {}
 
 impl QueryOptimiser {

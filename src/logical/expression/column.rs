@@ -2,6 +2,7 @@ use crate::logical::expression::LogicalExpressionCapabilities;
 use crate::logical::plan::{LogicalPlan, LogicalPlanCapabilities};
 use arrow2::datatypes::Field;
 
+#[derive(Debug, Clone)]
 pub struct Column {
     pub name: String,
 }

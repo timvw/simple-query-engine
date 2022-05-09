@@ -1,6 +1,7 @@
 use crate::logical::plan::{LogicalPlan, LogicalPlanCapabilities};
 use crate::physical::plan::PhyiscalPlan;
 
+#[derive(Debug, Copy, Clone)]
 pub struct QueryPlanner {}
 
 impl QueryPlanner {

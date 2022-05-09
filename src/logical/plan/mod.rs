@@ -12,6 +12,7 @@ pub trait LogicalPlanCapabilities {
     fn children(&self) -> Vec<&LogicalPlan>;
 }
 
+#[derive(Debug, Clone)]
 pub enum LogicalPlan {
     Scan(Scan),
     Projection(Box<Projection>),

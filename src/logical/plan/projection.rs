@@ -2,6 +2,7 @@ use crate::logical::expression::{LogicalExpression, LogicalExpressionCapabilitie
 use crate::logical::plan::{LogicalPlan, LogicalPlanCapabilities};
 use arrow2::datatypes::Schema;
 
+#[derive(Debug, Clone)]
 pub struct Projection {
     pub input: LogicalPlan,
     pub expressions: Vec<LogicalExpression>,

@@ -10,6 +10,7 @@ pub trait PhysicalPlanCapabilities {
     fn execute(&self) -> RecordBatchStream;
 }
 
+#[derive(Debug, Clone)]
 pub enum PhyiscalPlan {
     Scan(Scan),
     Projection(Box<Projection>),
