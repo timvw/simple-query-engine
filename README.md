@@ -37,4 +37,6 @@ cargo test
 
 cargo fmt
 cargo clippy --all-targets --workspace -- -D warnings
+
+cargo doc
 ```
