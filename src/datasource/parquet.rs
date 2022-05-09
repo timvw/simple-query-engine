@@ -76,12 +76,13 @@ impl DataSourceCapabilities for Parquet {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::util::test::parquet_test_data;
     use arrow2::datatypes::{DataType, Field, TimeUnit};
     use futures::StreamExt;
 
     #[test]
     fn test_parquet_schema() -> Result<()> {
-        let test_file = "./parquet-testing/data/alltypes_plain.parquet";
+        let test_file = format!("{}/alltypes_plain.parquet", parquet_test_data());
         let parquet_datasource = Parquet::new(test_file.to_string())?;
 
         let actual_schema = parquet_datasource.schema();
@@ -111,7 +112,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_scan_parquet_without_projection() -> Result<()> {
-        let test_file = "./parquet-testing/data/alltypes_plain.parquet";
+        let test_file = format!("{}/alltypes_plain.parquet", parquet_test_data());
         let parquet_datasource = Parquet::new(test_file.to_string())?;
 
         let mut rbs = parquet_datasource.scan(None);
@@ -132,7 +133,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_scan_parquet_with_projection() -> Result<()> {
-        let test_file = "./parquet-testing/data/alltypes_plain.parquet";
+        let test_file = format!("{}/alltypes_plain.parquet", parquet_test_data());
         let parquet_datasource = Parquet::new(test_file.to_string())?;
 
         let mut rbs = parquet_datasource.scan(Some(vec!["id".to_string()]));

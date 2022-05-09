@@ -13,6 +13,7 @@ pub mod logical;
 pub mod optimiser;
 pub mod physical;
 pub mod planner;
+pub mod util;
 
 pub type RecordBatch = Chunk<Arc<dyn Array>>;
 pub type RecordBatchStream =
