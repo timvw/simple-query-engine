@@ -1,5 +1,5 @@
 use crate::datasource::parquet::Parquet;
-use crate::RecordBatchStream;
+use crate::{Result, RecordBatchStream};
 use arrow2::datatypes::Schema;
 
 pub trait DataSourceCapabilities {
@@ -19,6 +19,13 @@ pub trait DataSourceCapabilities {
 
 pub enum DataSource {
     Parquet(Parquet),
+}
+
+impl DataSource {
+    pub fn parquet(file_path: String) -> Result<DataSource> {
+        let parquet = Parquet::new(file_path)?;
+        Ok(DataSource::Parquet(parquet))
+    }
 }
 
 impl DataSourceCapabilities for DataSource {
