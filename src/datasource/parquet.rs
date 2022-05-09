@@ -110,7 +110,28 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_scan_parquet() -> Result<()> {
+    async fn test_scan_parquet_without_projection() -> Result<()> {
+        let test_file = "./parquet-testing/data/alltypes_plain.parquet";
+        let parquet_datasource = ParquetDataSource::new(test_file.to_string())?;
+
+        let mut rbs = parquet_datasource.scan(None);
+        let mut actual_row_count = 0;
+
+        if let Some(rrb) = rbs.next().await {
+            let rb = rrb?;
+            assert_eq!(rb.columns().len(), 11); // all columns are expected
+            actual_row_count += rb.columns().get(0).unwrap().len();
+        }
+        assert_eq!(actual_row_count, 8);
+
+        //let x = parquet_datasource.scan(None);
+        //crate::pretty_print(x, parquet_datasource.schema()).await;
+
+        Ok(())
+    }
+
+    #[tokio::test]
+    async fn test_scan_parquet_with_projection() -> Result<()> {
         let test_file = "./parquet-testing/data/alltypes_plain.parquet";
         let parquet_datasource = ParquetDataSource::new(test_file.to_string())?;
 
@@ -124,8 +145,8 @@ mod tests {
         }
         assert_eq!(actual_row_count, 8);
 
-        let x = parquet_datasource.scan(Some(vec!["id".to_string()]));
-        crate::pretty_print(x, parquet_datasource.schema()).await;
+        //let x = parquet_datasource.scan(Some(vec!["id".to_string()]));
+        //crate::pretty_print(x, parquet_datasource.schema()).await;
 
         Ok(())
     }
