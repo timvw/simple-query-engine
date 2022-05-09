@@ -1,8 +1,8 @@
-use std::ops::Deref;
-use std::sync::Arc;
-use arrow2::array::Array;
 use crate::physical::expression::{PhysicalExpression, PhysicalExpressionCapabilities};
 use crate::RecordBatch;
+use arrow2::array::Array;
+use std::ops::Deref;
+use std::sync::Arc;
 
 #[derive(Debug, Clone)]
 pub struct Concatenate {
@@ -16,7 +16,7 @@ impl PhysicalExpressionCapabilities for Concatenate {
             let column = e.evaluate(input.clone());
             columns.push(column);
         }
-        let arrays = columns.iter().map(|c|c.deref()).collect::<Vec<_>>();
+        let arrays = columns.iter().map(|c| c.deref()).collect::<Vec<_>>();
         let result_array = arrow2::compute::concatenate::concatenate(&arrays).unwrap();
         Arc::from(result_array)
     }

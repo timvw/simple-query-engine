@@ -1,7 +1,7 @@
+use crate::logical::expression::column::Column;
 use crate::logical::expression::LogicalExpressionCapabilities;
 use crate::logical::plan::LogicalPlan;
 use arrow2::datatypes::{DataType, Field};
-use crate::logical::expression::column::Column;
 
 #[derive(Debug, Clone)]
 pub struct Literal {

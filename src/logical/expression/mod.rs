@@ -1,8 +1,8 @@
 use crate::logical::expression::column::Column;
+use crate::logical::expression::concatenate::Concatenate;
 use crate::logical::expression::literal::Literal;
 use crate::logical::plan::LogicalPlan;
 use arrow2::datatypes::Field;
-use crate::logical::expression::concatenate::Concatenate;
 
 pub trait LogicalExpressionCapabilities {
     fn to_field(&self, input: &LogicalPlan) -> Field;
@@ -44,5 +44,5 @@ impl LogicalExpressionCapabilities for LogicalExpression {
 }
 
 pub mod column;
-pub mod literal;
 pub mod concatenate;
+pub mod literal;

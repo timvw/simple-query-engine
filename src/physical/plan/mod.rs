@@ -86,15 +86,14 @@ mod tests {
     use crate::logical::expression::LogicalExpression;
     use crate::logical::plan::LogicalPlan;
     use crate::optimiser::logical::QueryOptimiser;
-    use crate::planner::QueryPlanner;
     use crate::physical::plan::PhysicalPlanCapabilities;
-    use crate::Result;
+    use crate::planner::QueryPlanner;
     use crate::util::test::parquet_test_data;
+    use crate::Result;
     use futures::stream::StreamExt;
 
     #[tokio::test]
-    async fn test_e2e() -> Result<()>{
-
+    async fn test_e2e() -> Result<()> {
         let test_file = format!("{}/alltypes_plain.parquet", parquet_test_data());
         let datasource = DataSource::parquet(test_file)?;
 

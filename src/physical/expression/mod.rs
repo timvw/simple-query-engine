@@ -1,9 +1,9 @@
 use crate::physical::expression::column::Column;
+use crate::physical::expression::concatenate::Concatenate;
 use crate::physical::expression::literal::Literal;
 use crate::RecordBatch;
 use arrow2::array::Array;
 use std::sync::Arc;
-use crate::physical::expression::concatenate::Concatenate;
 
 pub trait PhysicalExpressionCapabilities {
     fn evaluate(&self, input: RecordBatch) -> Arc<dyn Array>;
@@ -24,7 +24,7 @@ impl PhysicalExpression {
         PhysicalExpression::Literal(Literal { name, value })
     }
     pub fn concatenate(expressions: Vec<PhysicalExpression>) -> PhysicalExpression {
-        PhysicalExpression::Concatenate(Concatenate { expressions})
+        PhysicalExpression::Concatenate(Concatenate { expressions })
     }
 }
 
@@ -33,11 +33,11 @@ impl PhysicalExpressionCapabilities for PhysicalExpression {
         match self {
             PhysicalExpression::Column(column) => column.evaluate(input),
             PhysicalExpression::Literal(literal) => literal.evaluate(input),
-            PhysicalExpression::Concatenate(concatenate)=> concatenate.evaluate(input),
+            PhysicalExpression::Concatenate(concatenate) => concatenate.evaluate(input),
         }
     }
 }
 
 pub mod column;
-pub mod literal;
 pub mod concatenate;
+pub mod literal;

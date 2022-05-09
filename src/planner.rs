@@ -47,12 +47,12 @@ impl QueryPlanner {
                 PhysicalExpression::literal(literal.name.clone(), literal.value.clone())
             }
             LogicalExpression::Concatenate(concatenate) => {
-                let expressions = concatenate.expressions.iter()
+                let expressions = concatenate
+                    .expressions
+                    .iter()
                     .map(|e| Self::create_physical_expression(e, input))
                     .collect();
-                PhysicalExpression::Concatenate(Concatenate{
-                  expressions
-                })
+                PhysicalExpression::Concatenate(Concatenate { expressions })
             }
         }
     }
