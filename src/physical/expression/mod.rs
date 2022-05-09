@@ -5,7 +5,7 @@ use arrow2::array::Array;
 use std::sync::Arc;
 
 trait PhysicalExpressionCapabilities {
-    fn evaluate(&self, input: RecordBatch) -> &Arc<dyn Array>;
+    fn evaluate(&self, input: RecordBatch) -> Arc<dyn Array>;
 }
 
 #[derive(Debug, Clone)]
@@ -24,7 +24,7 @@ impl PhysicalExpression {
 }
 
 impl PhysicalExpressionCapabilities for PhysicalExpression {
-    fn evaluate(&self, input: RecordBatch) -> &Arc<dyn Array> {
+    fn evaluate(&self, input: RecordBatch) -> Arc<dyn Array> {
         match self {
             PhysicalExpression::Column(column) => column.evaluate(input),
             PhysicalExpression::Literal(literal) => literal.evaluate(input),

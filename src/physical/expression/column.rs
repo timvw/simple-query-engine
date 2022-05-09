@@ -9,7 +9,9 @@ pub struct Column {
 }
 
 impl PhysicalExpressionCapabilities for Column {
-    fn evaluate(&self, _input: RecordBatch) -> &Arc<dyn Array> {
-        todo!()
+    fn evaluate(&self, input: RecordBatch) -> Arc<dyn Array> {
+        let columns = input.columns();
+        let column = columns.get(self.index).unwrap();
+        column.clone()
     }
 }
