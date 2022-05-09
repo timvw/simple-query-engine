@@ -17,6 +17,12 @@ async fn main() -> Result<()> {
         vec![
             LogicalExpression::column("id".to_string()),
             LogicalExpression::literal("name".to_string(), "Mr. Literal".to_string()),
+            LogicalExpression::contatenate("concat".to_string(), vec![
+                LogicalExpression::column("id".to_string()),
+                LogicalExpression::column("id".to_string()),
+                //LogicalExpression::literal("hellon".to_string(), "hello".to_string()),
+                //LogicalExpression::literal("worldn".to_string(), "world".to_string()),
+            ])
         ],
     );
 

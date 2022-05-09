@@ -23,6 +23,9 @@ impl LogicalExpression {
     pub fn literal(name: String, value: String) -> LogicalExpression {
         LogicalExpression::Literal(Literal { name, value })
     }
+    pub fn contatenate(name: String, expressions: Vec<LogicalExpression>) -> LogicalExpression {
+        LogicalExpression::Concatenate(Concatenate{name, expressions})
+    }
 }
 
 impl LogicalExpressionCapabilities for LogicalExpression {
