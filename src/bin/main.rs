@@ -24,7 +24,7 @@ async fn main() -> Result<()> {
     println!("{}", optimized_plan);
 
     let phyiscal_plan = QueryPlanner::create_physical_plan(optimized_plan);
-    println!("{:?}", phyiscal_plan);
+    println!("{}", phyiscal_plan);
 
     let result = phyiscal_plan.execute();
     let schema = phyiscal_plan.schema();

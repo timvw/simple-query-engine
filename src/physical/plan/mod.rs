@@ -4,6 +4,7 @@ use crate::physical::plan::projection::Projection;
 use crate::physical::plan::scan::Scan;
 use crate::RecordBatchStream;
 use arrow2::datatypes::Schema;
+use std::fmt;
 
 pub trait PhysicalPlanCapabilities {
     fn schema(&self) -> Schema;
@@ -34,6 +35,21 @@ impl PhyiscalPlan {
             expressions,
         }))
     }
+
+    pub fn fmt_indent(&self, indent: usize) -> String {
+        match self {
+            PhyiscalPlan::Scan(scan) => format!(
+                "{:indent$}Scan: {}; field_names={:?}",
+                "", scan.datasource, scan.field_names
+            ),
+            PhyiscalPlan::Projection(projection) => format!(
+                "{:indent$}Projection: {:?}\n{}",
+                "",
+                projection.expressions,
+                projection.input.fmt_indent(indent + 1)
+            ),
+        }
+    }
 }
 
 impl PhysicalPlanCapabilities for PhyiscalPlan {
@@ -49,6 +65,12 @@ impl PhysicalPlanCapabilities for PhyiscalPlan {
             PhyiscalPlan::Scan(scan) => scan.execute(),
             PhyiscalPlan::Projection(projection) => projection.execute(),
         }
+    }
+}
+
+impl fmt::Display for PhyiscalPlan {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.fmt_indent(0))
     }
 }
 
