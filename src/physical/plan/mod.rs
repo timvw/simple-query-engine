@@ -79,3 +79,41 @@ impl fmt::Display for PhyiscalPlan {
 
 pub mod projection;
 pub mod scan;
+
+#[cfg(test)]
+mod tests {
+    use crate::datasource::DataSource;
+    use crate::logical::expression::LogicalExpression;
+    use crate::logical::plan::LogicalPlan;
+    use crate::optimiser::logical::QueryOptimiser;
+    use crate::planner::QueryPlanner;
+    use crate::physical::plan::PhysicalPlanCapabilities;
+    use crate::Result;
+    use crate::util::test::parquet_test_data;
+
+    #[tokio::test]
+    async fn test_e2e() -> Result<()>{
+
+        let test_file = format!("{}/alltypes_plain.parquet", parquet_test_data());
+        let datasource = DataSource::parquet(test_file)?;
+
+        let logical_plan = LogicalPlan::projection(
+            LogicalPlan::scan_all_columns(datasource),
+            vec![
+                LogicalExpression::column("id".to_string()),
+                LogicalExpression::literal("name".to_string(), "Mr. Literal".to_string()),
+            ],
+        );
+
+        let optimized_plan = QueryOptimiser::optimize(logical_plan);
+        let phyiscal_plan = QueryPlanner::create_physical_plan(optimized_plan);
+
+        let schema = phyiscal_plan.schema();
+        assert_eq!(schema.fields.len(), 2);
+
+        let rbs = phyiscal_plan.execute().await;
+
+
+        Ok(())
+    }
+}
