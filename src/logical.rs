@@ -1,4 +1,4 @@
-use crate::datasource::DataSource;
+use crate::datasource::{DataSource, DataSourceCapabilities};
 use crate::schema_projected;
 use arrow2::datatypes::{DataType, Field, Schema};
 
@@ -32,18 +32,18 @@ impl LogicalPlan {
 }
 
 pub struct Scan {
-    pub datasource: Box<dyn DataSource>,
+    pub datasource: DataSource,
     pub projection: Vec<String>,
 }
 
 impl Scan {
-    pub fn some_columns(datasource: Box<dyn DataSource>, projection: Vec<String>) -> Scan {
+    pub fn some_columns(datasource: DataSource, projection: Vec<String>) -> Scan {
         Scan {
             datasource,
             projection,
         }
     }
-    pub fn all_columns(datasource: Box<dyn DataSource>) -> Scan {
+    pub fn all_columns(datasource: DataSource) -> Scan {
         let ds_schema = datasource.schema();
         let projection = ds_schema.fields.iter().map(|f| f.name.clone()).collect();
         Scan {

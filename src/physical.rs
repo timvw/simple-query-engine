@@ -1,4 +1,4 @@
-use crate::datasource::DataSource;
+use crate::datasource::{DataSource, DataSourceCapabilities};
 use crate::{schema_projected, RecordBatch, RecordBatchStream};
 use arrow2::array::Array;
 use arrow2::datatypes::Schema;
@@ -31,7 +31,7 @@ impl PhyiscalPlan {
 }
 
 pub struct ScanExec {
-    pub datasource: Box<dyn DataSource>,
+    pub datasource: DataSource,
     pub projection: Vec<String>,
 }
 

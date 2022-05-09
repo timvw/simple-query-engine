@@ -1,7 +1,8 @@
 use crate::RecordBatchStream;
 use arrow2::datatypes::Schema;
+use crate::datasource::parquet::ParquetDataSource;
 
-pub trait DataSource {
+pub trait DataSourceCapabilities {
     /// Returns the schema of the underlying data (or should it be the schema of the projection?)
     fn schema(&self) -> Schema;
 
@@ -14,6 +15,25 @@ pub trait DataSource {
     /// # Examples
     /// let ds: DataSource = todo!();
     fn scan(&self, maybe_projection: Option<Vec<String>>) -> RecordBatchStream;
+}
+
+pub enum DataSource {
+    Parquet(ParquetDataSource),
+}
+
+impl DataSourceCapabilities for DataSource {
+
+    fn schema(&self) -> Schema {
+        match self {
+            DataSource::Parquet(x) => x.schema(),
+        }
+    }
+
+    fn scan(&self, maybe_projection: Option<Vec<String>>) -> RecordBatchStream {
+        match self {
+            DataSource::Parquet(x) => x.scan(maybe_projection),
+        }
+    }
 }
 
 pub mod parquet;

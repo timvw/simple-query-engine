@@ -1,4 +1,4 @@
-use crate::datasource::DataSource;
+use crate::datasource::DataSourceCapabilities;
 use crate::error::Result;
 use crate::RecordBatchStream;
 use arrow2::array::Array;
@@ -26,7 +26,7 @@ impl ParquetDataSource {
     }
 }
 
-impl DataSource for ParquetDataSource {
+impl DataSourceCapabilities for ParquetDataSource {
     fn schema(&self) -> Schema {
         let reader = self.get_reader().unwrap();
         reader.schema().clone()
