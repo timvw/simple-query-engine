@@ -12,12 +12,12 @@ use std::path::PathBuf;
 ///
 /// Example:
 /// ```
-/// let testdata = datafusion::test_util::arrow_test_data();
+/// let testdata = simply_query_engine::util::test::arrow_test_data();
 /// let csvdata = format!("{}/csv/aggregate_test_100.csv", testdata);
 /// assert!(std::path::PathBuf::from(csvdata).exists());
 /// ```
 pub fn arrow_test_data() -> String {
-    match get_data_dir("ARROW_TEST_DATA", "../../testing/data") {
+    match get_data_dir("ARROW_TEST_DATA", "testing/data") {
         Ok(pb) => pb.display().to_string(),
         Err(err) => panic!("failed to get arrow data dir: {}", err),
     }
@@ -34,12 +34,12 @@ pub fn arrow_test_data() -> String {
 ///
 /// Example:
 /// ```
-/// let testdata = datafusion::test_util::parquet_test_data();
+/// let testdata = simply_query_engine::util::test::parquet_test_data();
 /// let filename = format!("{}/binary.parquet", testdata);
 /// assert!(std::path::PathBuf::from(filename).exists());
 /// ```
 pub fn parquet_test_data() -> String {
-    match get_data_dir("PARQUET_TEST_DATA", "../../parquet-testing/data") {
+    match get_data_dir("PARQUET_TEST_DATA", "parquet-testing/data") {
         Ok(pb) => pb.display().to_string(),
         Err(err) => panic!("failed to get parquet data dir: {}", err),
     }
