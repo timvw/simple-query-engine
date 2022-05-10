@@ -10,7 +10,6 @@ pub enum ScalarValue {
 }
 
 impl ScalarValue {
-
     pub fn data_type(&self) -> DataType {
         match self {
             ScalarValue::Int8(_) => DataType::Int8,
@@ -39,5 +38,7 @@ impl ScalarValue {
     pub fn utf8(value: &str) -> ScalarValue {
         ScalarValue::Utf8(Some(value.to_string()))
     }
-    pub fn i32(value: i32) -> ScalarValue{ ScalarValue::Int32(Some(value))}
+    pub fn i32(value: i32) -> ScalarValue {
+        ScalarValue::Int32(Some(value))
+    }
 }

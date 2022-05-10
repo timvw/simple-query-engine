@@ -1,8 +1,8 @@
+use crate::datatypes::scalar::ScalarValue;
 use crate::physical::expression::PhysicalExpressionCapabilities;
 use crate::RecordBatch;
 use arrow2::array::{Array, PrimitiveArray, Utf8Array};
 use std::sync::Arc;
-use crate::datatypes::scalar::ScalarValue;
 
 #[derive(Debug, Clone)]
 pub struct Literal {

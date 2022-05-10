@@ -1,9 +1,9 @@
-use crate::logical::expression::column::Column;
+use crate::datatypes::scalar::ScalarValue;
 use crate::logical::expression::add::Add;
+use crate::logical::expression::column::Column;
 use crate::logical::expression::literal::Literal;
 use crate::logical::plan::LogicalPlan;
 use arrow2::datatypes::Field;
-use crate::datatypes::scalar::ScalarValue;
 
 pub trait LogicalExpressionCapabilities {
     fn to_field(&self, input: &LogicalPlan) -> Field;
@@ -25,7 +25,7 @@ impl LogicalExpression {
         LogicalExpression::Literal(Literal { name, value })
     }
     pub fn add(name: String, expressions: Vec<LogicalExpression>) -> LogicalExpression {
-        LogicalExpression::Add(Add {name, expressions})
+        LogicalExpression::Add(Add { name, expressions })
     }
 }
 
@@ -47,6 +47,6 @@ impl LogicalExpressionCapabilities for LogicalExpression {
     }
 }
 
-pub mod column;
 pub mod add;
+pub mod column;
 pub mod literal;

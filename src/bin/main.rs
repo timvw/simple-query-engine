@@ -19,13 +19,16 @@ async fn main() -> Result<()> {
         vec![
             LogicalExpression::column("id".to_string()),
             LogicalExpression::literal("name".to_string(), ScalarValue::utf8("Mr. Literal")),
-            LogicalExpression::add("add".to_string(), vec![
-                LogicalExpression::column("id".to_string()),
-                LogicalExpression::column("id".to_string()),
-                LogicalExpression::column("id".to_string()),
-                LogicalExpression::literal("".to_string(), ScalarValue::Int32(Some(200))),
-                //LogicalExpression::literal("".to_string(), ScalarValue::Int32(None)),
-            ])
+            LogicalExpression::add(
+                "add".to_string(),
+                vec![
+                    LogicalExpression::column("id".to_string()),
+                    LogicalExpression::column("id".to_string()),
+                    LogicalExpression::column("id".to_string()),
+                    LogicalExpression::literal("".to_string(), ScalarValue::Int32(Some(200))),
+                    //LogicalExpression::literal("".to_string(), ScalarValue::Int32(None)),
+                ],
+            ),
         ],
     );
 

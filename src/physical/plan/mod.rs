@@ -83,6 +83,7 @@ pub mod scan;
 #[cfg(test)]
 mod tests {
     use crate::datasource::DataSource;
+    use crate::datatypes::scalar::ScalarValue;
     use crate::logical::expression::LogicalExpression;
     use crate::logical::plan::LogicalPlan;
     use crate::optimiser::logical::QueryOptimiser;
@@ -91,7 +92,6 @@ mod tests {
     use crate::util::test::parquet_test_data;
     use crate::Result;
     use futures::stream::StreamExt;
-    use crate::datatypes::scalar::ScalarValue;
 
     #[tokio::test]
     async fn test_e2e() -> Result<()> {

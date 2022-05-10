@@ -31,9 +31,9 @@ fn pushdown_projection_columns_to_scan_field_names(logical_plan: LogicalPlan) ->
 mod tests {
     use super::*;
     use crate::datasource::DataSource;
+    use crate::datatypes::scalar::ScalarValue;
     use crate::logical::expression::LogicalExpression;
     use crate::logical::plan::scan::Scan;
-    use crate::datatypes::scalar::ScalarValue;
     use crate::Result;
 
     #[test]

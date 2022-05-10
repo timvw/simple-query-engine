@@ -1,10 +1,10 @@
-use crate::physical::expression::column::Column;
+use crate::datatypes::scalar::ScalarValue;
 use crate::physical::expression::add::Add;
+use crate::physical::expression::column::Column;
 use crate::physical::expression::literal::Literal;
 use crate::RecordBatch;
 use arrow2::array::Array;
 use std::sync::Arc;
-use crate::datatypes::scalar::ScalarValue;
 
 pub trait PhysicalExpressionCapabilities {
     fn evaluate(&self, input: RecordBatch) -> Arc<dyn Array>;
@@ -39,6 +39,6 @@ impl PhysicalExpressionCapabilities for PhysicalExpression {
     }
 }
 
-pub mod column;
 pub mod add;
+pub mod column;
 pub mod literal;
