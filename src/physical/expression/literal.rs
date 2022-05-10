@@ -4,12 +4,12 @@ use arrow2::array::{Array, Utf8Array};
 use std::sync::Arc;
 
 #[derive(Debug, Clone)]
-pub struct Literal {
+pub struct Utf8Literal {
     pub name: String,
     pub value: String,
 }
 
-impl PhysicalExpressionCapabilities for Literal {
+impl PhysicalExpressionCapabilities for Utf8Literal {
     fn evaluate(&self, input: RecordBatch) -> Arc<dyn Array> {
         let mut v: Vec<Option<String>> = Vec::new();
         for _ in 0..input.len() {
