@@ -1,4 +1,5 @@
 use simply_query_engine::datasource::{DataSource, DataSourceCapabilities};
+use simply_query_engine::datatypes::scalar::ScalarValue;
 use simply_query_engine::error::*;
 use simply_query_engine::logical::expression::LogicalExpression;
 use simply_query_engine::logical::plan::LogicalPlan;
@@ -17,7 +18,7 @@ async fn main() -> Result<()> {
         LogicalPlan::scan_all_columns(datasource),
         vec![
             LogicalExpression::column("id".to_string()),
-            LogicalExpression::literal("name".to_string(), "Mr. Literal".to_string()),
+            LogicalExpression::literal("name".to_string(), ScalarValue::utf8("Mr. Literal")),
             LogicalExpression::add("add".to_string(), vec![
                 LogicalExpression::column("id".to_string()),
                 LogicalExpression::column("id".to_string()),

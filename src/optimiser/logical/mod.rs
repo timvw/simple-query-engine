@@ -33,6 +33,7 @@ mod tests {
     use crate::datasource::DataSource;
     use crate::logical::expression::LogicalExpression;
     use crate::logical::plan::scan::Scan;
+    use crate::datatypes::scalar::ScalarValue;
     use crate::Result;
 
     #[test]
@@ -44,7 +45,7 @@ mod tests {
             LogicalPlan::Scan(scan.clone()),
             vec![
                 LogicalExpression::column("id".to_string()),
-                LogicalExpression::literal("test".to_string(), "Mr Literalis".to_string()),
+                LogicalExpression::literal("test".to_string(), ScalarValue::utf8("Mr Literalis")),
             ],
         );
 

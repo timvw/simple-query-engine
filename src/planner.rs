@@ -44,7 +44,7 @@ impl QueryPlanner {
                 PhysicalExpression::column(column_index)
             }
             LogicalExpression::Literal(literal) => {
-                PhysicalExpression::utf8_literal(literal.name.clone(), literal.value.clone())
+                PhysicalExpression::literal(literal.name.clone(), literal.value.clone())
             }
             LogicalExpression::Add(add) => {
                 let expressions = add

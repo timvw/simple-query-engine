@@ -91,6 +91,7 @@ mod tests {
     use crate::util::test::parquet_test_data;
     use crate::Result;
     use futures::stream::StreamExt;
+    use crate::datatypes::scalar::ScalarValue;
 
     #[tokio::test]
     async fn test_e2e() -> Result<()> {
@@ -101,7 +102,7 @@ mod tests {
             LogicalPlan::scan_all_columns(datasource),
             vec![
                 LogicalExpression::column("id".to_string()),
-                LogicalExpression::literal("name".to_string(), "Mr. Literal".to_string()),
+                LogicalExpression::literal("name".to_string(), ScalarValue::utf8("Mr. Literal")),
             ],
         );
 

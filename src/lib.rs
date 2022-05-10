@@ -9,6 +9,7 @@ use futures::StreamExt;
 use std::pin::Pin;
 use std::sync::Arc;
 
+pub mod datatypes;
 pub mod datasource;
 pub mod error;
 pub mod logical;
