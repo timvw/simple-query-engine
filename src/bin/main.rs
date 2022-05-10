@@ -23,6 +23,8 @@ async fn main() -> Result<()> {
                 LogicalExpression::column("id".to_string()),
                 LogicalExpression::column("id".to_string()),
                 LogicalExpression::column("id".to_string()),
+                LogicalExpression::literal("".to_string(), ScalarValue::Int32(Some(200))),
+                //LogicalExpression::literal("".to_string(), ScalarValue::Int32(None)),
             ])
         ],
     );
