@@ -1,4 +1,4 @@
-use simply_query_engine::datasource::DataSource;
+use simply_query_engine::datasource::{DataSource, DataSourceCapabilities};
 use simply_query_engine::error::*;
 use simply_query_engine::logical::expression::LogicalExpression;
 use simply_query_engine::logical::plan::LogicalPlan;
@@ -11,13 +11,14 @@ use simply_query_engine::pretty_print;
 async fn main() -> Result<()> {
     let test_file = "./parquet-testing/data/alltypes_plain.parquet";
     let datasource = DataSource::parquet(test_file.to_string())?;
+    println!("schema of datasource: {:?}", datasource.schema());
 
     let logical_plan = LogicalPlan::projection(
         LogicalPlan::scan_all_columns(datasource),
         vec![
             LogicalExpression::column("id".to_string()),
             LogicalExpression::literal("name".to_string(), "Mr. Literal".to_string()),
-            LogicalExpression::contatenate("concat".to_string(), vec![
+            LogicalExpression::add("add".to_string(), vec![
                 LogicalExpression::column("id".to_string()),
                 LogicalExpression::column("id".to_string()),
                 //LogicalExpression::literal("hellon".to_string(), "hello".to_string()),

@@ -4,12 +4,12 @@ use crate::logical::plan::LogicalPlan;
 use arrow2::datatypes::Field;
 
 #[derive(Debug, Clone)]
-pub struct Concatenate {
+pub struct Add {
     pub name: String,
     pub expressions: Vec<LogicalExpression>,
 }
 
-impl LogicalExpressionCapabilities for Concatenate {
+impl LogicalExpressionCapabilities for Add {
     fn to_field(&self, input: &LogicalPlan) -> Field {
         let fields = self
             .expressions

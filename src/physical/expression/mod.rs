@@ -1,5 +1,5 @@
 use crate::physical::expression::column::Column;
-use crate::physical::expression::concatenate::Concatenate;
+use crate::physical::expression::add::Add;
 use crate::physical::expression::literal::Literal;
 use crate::RecordBatch;
 use arrow2::array::Array;
@@ -13,7 +13,7 @@ pub trait PhysicalExpressionCapabilities {
 pub enum PhysicalExpression {
     Column(Column),
     Literal(Literal),
-    Concatenate(Concatenate),
+    Add(Add),
 }
 
 impl PhysicalExpression {
@@ -23,8 +23,8 @@ impl PhysicalExpression {
     pub fn literal(name: String, value: String) -> PhysicalExpression {
         PhysicalExpression::Literal(Literal { name, value })
     }
-    pub fn concatenate(expressions: Vec<PhysicalExpression>) -> PhysicalExpression {
-        PhysicalExpression::Concatenate(Concatenate { expressions })
+    pub fn add(expressions: Vec<PhysicalExpression>) -> PhysicalExpression {
+        PhysicalExpression::Add(Add { expressions })
     }
 }
 
@@ -33,11 +33,11 @@ impl PhysicalExpressionCapabilities for PhysicalExpression {
         match self {
             PhysicalExpression::Column(column) => column.evaluate(input),
             PhysicalExpression::Literal(literal) => literal.evaluate(input),
-            PhysicalExpression::Concatenate(concatenate) => concatenate.evaluate(input),
+            PhysicalExpression::Add(add) => add.evaluate(input),
         }
     }
 }
 
 pub mod column;
-pub mod concatenate;
+pub mod add;
 pub mod literal;
