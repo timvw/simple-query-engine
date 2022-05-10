@@ -21,8 +21,7 @@ async fn main() -> Result<()> {
             LogicalExpression::add("add".to_string(), vec![
                 LogicalExpression::column("id".to_string()),
                 LogicalExpression::column("id".to_string()),
-                //LogicalExpression::literal("hellon".to_string(), "hello".to_string()),
-                //LogicalExpression::literal("worldn".to_string(), "world".to_string()),
+                LogicalExpression::column("id".to_string()),
             ])
         ],
     );
