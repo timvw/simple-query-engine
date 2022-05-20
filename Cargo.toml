@@ -13,4 +13,4 @@ async-stream = "0.3.3"
 async-trait = "0.1.53"
 
 [dev-dependencies]
-regex = "1.5.5"
+regex = "1.5.6"
