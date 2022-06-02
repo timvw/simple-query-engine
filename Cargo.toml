@@ -10,7 +10,7 @@ arrow2 = { version = "0.11.2", features = ["full"] }
 tokio = { version = "1.18", features = ["full"] }
 futures = "0.3"
 async-stream = "0.3.3"
-async-trait = "0.1.53"
+async-trait = "0.1.56"
 
 [dev-dependencies]
 regex = "1.5.6"
