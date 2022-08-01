@@ -63,21 +63,21 @@ checksum = "bf7d0a018de4f6aa429b9d33d69edf69072b1c5b1cb8d3e4a5f7ef898fc3eb76"
 
 [[package]]
 name = "arrow-format"
-version = "0.6.0"
+version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "216249afef413d7e9e9b4b543e73b3e371ace3a812380af98f1c871521572cdd"
+checksum = "8df5d25bc6d676271277120c41ef28760fe0a9f070677a58db621c0f983f9c20"
 dependencies = [
  "planus",
- "prost",
- "prost-derive",
+ "prost 0.10.4",
+ "prost-derive 0.10.1",
  "serde",
 ]
 
 [[package]]
 name = "arrow2"
-version = "0.12.0"
+version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5feafd6df4e3f577529e6aa2b9b7cdb3c9fe8e8f66ebc8dc29abbe71a7e968f0"
+checksum = "87a339834bf51ed376b8cf8fb0e8984531f560cd5c75c3c62c6e657836b6d094"
 dependencies = [
  "ahash",
  "arrow-format",
@@ -92,8 +92,10 @@ dependencies = [
  "csv",
  "csv-async",
  "csv-core",
+ "dyn-clone",
  "either",
  "fallible-streaming-iterator",
+ "foreign_vec",
  "futures",
  "hash_hasher",
  "hex",
@@ -106,6 +108,7 @@ dependencies = [
  "multiversion",
  "num-traits",
  "odbc-api",
+ "orc-format",
  "parquet2",
  "regex",
  "serde",
@@ -141,9 +144,9 @@ dependencies = [
 
 [[package]]
 name = "async-trait"
-version = "0.1.56"
+version = "0.1.57"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "96cf8829f67d2eab0b2dfa42c5d0ef737e0724e4a82b01b3e292456202b19716"
+checksum = "76464446b8bc32758d7e88ee1a804d9914cd9b1cb264c029899680b0be29826f"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -575,6 +578,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9ea835d29036a4087793836fa931b08837ad5e957da9e23886b29586fb9b6650"
 
 [[package]]
+name = "dyn-clone"
+version = "1.0.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9d07a982d1fb29db01e5a59b1918e03da4df7297eaeee7686ac45542fd4e59c8"
+
+[[package]]
 name = "either"
 version = "1.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -624,6 +633,12 @@ name = "foreign-types-shared"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "00b0228411908ca8685dba7fc2cdd70ec9990a6e753e89b6ac91a84c40fbaf4b"
+
+[[package]]
+name = "foreign_vec"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ee1b05cbd864bcaecbd3455d6d967862d446e4ebfc3c2e5e5b9841e53cba6673"
 
 [[package]]
 name = "futures"
@@ -1257,6 +1272,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "87f3e037eac156d1775da914196f0f37741a274155e34a0b7e427c35d2a2ecb9"
 
 [[package]]
+name = "orc-format"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "402a2dcf15f0a73c4fe33c622dec93adf95e05cb72d5b9a9af2bf51f3cc41f0b"
+dependencies = [
+ "fallible-streaming-iterator",
+ "flate2",
+ "prost 0.9.0",
+]
+
+[[package]]
 name = "parking_lot"
 version = "0.11.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1306,9 +1332,9 @@ dependencies = [
 
 [[package]]
 name = "parquet-format-async-temp"
-version = "0.3.0"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "488c8b5f43521d019fade4bcc0ce88cce5da5fd26eb1d38b933807041f5930bf"
+checksum = "e1a672c84c3e5b5eb6530286b2d22cc1ea8e1e3560e4c314218d6ab749c6db99"
 dependencies = [
  "async-trait",
  "futures",
@@ -1317,9 +1343,9 @@ dependencies = [
 
 [[package]]
 name = "parquet2"
-version = "0.13.0"
+version = "0.14.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5653509c49578c1dbea76a1007d6e3b2fbcf52f2fcb9a3d84593599510c293ae"
+checksum = "f3eb21c37048a08693214d1f0d34eea97a8d90322e15c4a5e2017d56420e1195"
 dependencies = [
  "async-stream",
  "bitpacking",
@@ -1407,9 +1433,9 @@ checksum = "1df8c4ec4b0627e53bdf214615ad287367e482558cf84b109250b37464dc03ae"
 
 [[package]]
 name = "planus"
-version = "0.2.0"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bffebaf174d6cad46a5f0f1bb1c45c6eb509571688bcb18dfab217f3c9f9b151"
+checksum = "fc1691dd09e82f428ce8d6310bd6d5da2557c82ff17694d2a32cad7242aea89f"
 dependencies = [
  "array-init-cursor",
 ]
@@ -1441,12 +1467,35 @@ dependencies = [
 
 [[package]]
 name = "prost"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "444879275cb4fd84958b1a1d5420d15e6fcf7c235fe47f053c9c2a80aceb6001"
+dependencies = [
+ "bytes",
+ "prost-derive 0.9.0",
+]
+
+[[package]]
+name = "prost"
 version = "0.10.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "71adf41db68aa0daaefc69bb30bcd68ded9b9abaad5d1fbb6304c4fb390e083e"
 dependencies = [
  "bytes",
- "prost-derive",
+ "prost-derive 0.10.1",
+]
+
+[[package]]
+name = "prost-derive"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f9cc1a3263e07e0bf68e96268f37665207b49560d98739662cdfaae215c720fe"
+dependencies = [
+ "anyhow",
+ "itertools",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -1521,9 +1570,9 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.5.6"
+version = "1.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d83f127d94bdbcda4c8cc2e50f6f84f4b611f69c902699ca385a39c3a75f9ff1"
+checksum = "4c4eb3267174b8c6c2f654116623910a0fef09c4753f8dd83db29c48a0df988b"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -1538,9 +1587,9 @@ checksum = "6c230d73fb8d8c1b9c0b3135c5142a8acee3a0558fb8db5cf1cb65f8d7862132"
 
 [[package]]
 name = "regex-syntax"
-version = "0.6.26"
+version = "0.6.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "49b3de9ec5dc0a3417da371aab17d729997c15010e7fd24ff707773a33bddb64"
+checksum = "a3f87b73ce11b1619a3c6332f45341e0047173771e8b8b73f87bfeefb7b56244"
 
 [[package]]
 name = "rle-decode-fast"
