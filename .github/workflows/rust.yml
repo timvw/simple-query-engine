@@ -17,11 +17,11 @@ jobs:
       ARROW_TEST_DATA: testing/data
       PARQUET_TEST_DATA: parquet-testing/data
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: true
 
-    - uses: Swatinem/rust-cache@v1
+    - uses: Swatinem/rust-cache@v2
 
     - name: Build
       run: cargo build --verbose
